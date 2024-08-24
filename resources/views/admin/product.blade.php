@@ -3,6 +3,11 @@
 <html lang="en">
 <head>
   @include('admin.css')
+  <style>
+    .text-blue {
+      color: blue;
+    }
+  </style>
 </head>
 <body>
   <div class="container-scroller">
@@ -25,19 +30,19 @@
             @csrf
             <div class="form-group">
               <label for="name">Product Name:</label>
-              <input type="text" id="name" name="name" class="form-control" required>
+              <input type="text" id="name" name="name" class="form-control custom-input text-blue" required>
             </div>
             <div class="form-group">
               <label for="description">Description:</label>
-              <textarea id="description" name="description" class="form-control" rows="4"></textarea>
+              <textarea id="description" name="description" class="form-control custom-input text-blue" rows="4"></textarea>
             </div>
             <div class="form-group">
               <label for="price">Price:</label>
-              <input type="number" id="price" name="price" class="form-control" step="0.01" required>
+              <input type="number" id="price" name="price" class="form-control text-blue" step="0.01" required>
             </div>
             <div class="form-group">
               <label for="stock_quantity">Stock Quantity:</label>
-              <input type="number" id="stock_quantity" name="stock_quantity" class="form-control" required>
+              <input type="number" id="stock_quantity" name="stock_quantity" class="form-control text-blue" required>
             </div>
             <div class="form-group">
               <label for="category_id">Category:</label>
@@ -87,6 +92,7 @@
                       @endif
                     </td>
                     <td>
+                      <a href="{{ url('update_product', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>
                       <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')

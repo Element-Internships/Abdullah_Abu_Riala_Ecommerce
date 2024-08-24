@@ -35,7 +35,8 @@ Route::get('redirect', [HomeController::class,'redirect']);
 
 Route::get('/view_category', [AdminController::class, 'view_category'])->name('admin.view_category');
 Route::get('/view_product', [AdminController::class, 'view_product'])->name('admin.view_product');
-
+Route::get('/update_product/{id}', [AdminController::class, 'update_product'])->name('admin.update_product');
+Route::post('update_product_confirm/{product}', [AdminController::class, 'update_product_confirm'])->name('update_product_confirm');
 // Category creation form and store routes
 Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
 Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
@@ -56,12 +57,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     // Route to display a list of products
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    
-    // Route to display the product edit form
-    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    
-    // Route to handle form submission for updating a product
-    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     
     // Route to handle product deletion
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');

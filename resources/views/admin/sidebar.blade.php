@@ -75,7 +75,9 @@
             </a>
           </li>
 
-          <li class="nav-item menu-items">
+  
+
+<li class="nav-item menu-items">
   <a class="nav-link" href="{{url ('view_product')}}">
     <span class="menu-icon">
       <i class="mdi mdi-laptop"></i>
@@ -83,6 +85,7 @@
     <span class="menu-title">Products</span>
   </a>
 </li>
+
 
 
           <li class="nav-item menu-items">
