@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Category;
+
 
 class HomeController extends Controller
 {
@@ -15,7 +17,8 @@ class HomeController extends Controller
 
 
         $product=Product::all();
-        return view('home.userpage',compact('product'));
+        $categories = Category::all(); 
+        return view('home.userpage',compact('product','categories'));
     }
 
     public function redirect(){
@@ -27,6 +30,8 @@ class HomeController extends Controller
 
         else{
             $product=Product::all();
-            return view('home.userpage',compact('product'));        }
+        $categories = Category::all(); 
+        return view('home.userpage',compact('product','categories')); 
+               }
     }
 }
