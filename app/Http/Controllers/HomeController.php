@@ -18,7 +18,9 @@ class HomeController extends Controller
 
         $product=Product::all();
         $categories = Category::all(); 
-        return view('home.userpage',compact('product','categories'));
+        $latestProducts = Product::latest()->take(9)->get(); 
+
+        return view('home.userpage',compact('product','categories', 'latestProducts'));
     }
 
     public function redirect(){
@@ -30,8 +32,10 @@ class HomeController extends Controller
 
         else{
             $product=Product::all();
-        $categories = Category::all(); 
-        return view('home.userpage',compact('product','categories')); 
+            $categories = Category::all(); 
+            $latestProducts = Product::latest()->take(9)->get(); 
+    
+            return view('home.userpage',compact('product','categories', 'latestProducts'));
                }
     }
 }
