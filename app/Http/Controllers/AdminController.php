@@ -47,7 +47,7 @@ class AdminController extends Controller
         
             $product->update(array_merge($request->except('image'), ['image_path' => $imagePath]));
         
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Product updated successfully.');
         }
         
 
