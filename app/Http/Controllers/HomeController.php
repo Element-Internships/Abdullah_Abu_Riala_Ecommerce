@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Cart;
 
 
 class HomeController extends Controller
@@ -40,20 +41,41 @@ class HomeController extends Controller
     }
 
 
-    public function product_details($id) {
+    public function product_details(Request $request, $id) {
         $product = Product::findOrFail($id);
         return view('home.product_details', compact('product'));
     }
     
-    public function add_cart($id) {
-       if(Auth::id()){
-        return redirect()->back();
-       }
+    public function add_cart(Request $request, $id) {
+        if (Auth::id()) {
+            $user = Auth::user();
+            $product = Product::find($id);
+            $cart = new Cart;
+    
+            $cart->name = $user->name;
+            $cart->email = $user->email;
+            $cart->phone = $user->phone;
+            $cart->address = $user->address;
+            $cart->user_id = $user->id;
+    
+            $cart->product_tittle = $product->name;
+            $cart->price = $product->price;
+            $cart->image = $product->image_path;
+            $cart->Product_id = $product->id;
+    
+            // Save the quantity from the request
+        $quantity = $request->input('quantity', 1); // Default to 1 if not provided
+        $cart->quantity = $quantity;
 
-       else{
-        return redirect('login');
-       }
-
+        // Calculate the total price based on quantity
+        $cart->price = $product->price * $quantity;
+        
+            $cart->save();
+    
+            return redirect()->back()->with('message', 'Product added to cart successfully');
+        } else {
+            return redirect('login');
+        }
     }
 
 }

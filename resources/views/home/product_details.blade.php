@@ -40,14 +40,18 @@
                         <h3>{{ $product->name }}</h3>
                         <h4>${{ $product->price }}</h4>
                         <p>Product Description : {{ $product->description }}</p>
-                        <div class="product__details__quantity">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
+                        <form action="{{ url('add_cart', $product->id) }}" method="POST">
+                            @csrf
+                            <div class="product__details__quantity">
+                                <div class="quantity">
+                                    <div class="pro-qty">
+                                        <input type="number" name="quantity" value="1" min="1">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <a href="#" class="primary-btn">ADD TO CART</a>
+                            <button type="submit" class="primary-btn">ADD TO CART</button>
+                        </form>
+
                     </div>
                 </div>
             </div>
