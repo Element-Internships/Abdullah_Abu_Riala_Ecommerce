@@ -31,6 +31,10 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::get('/contact', function () {
+    return view('home.contact');
+})->name('contact');
+
 Route::get('redirect', [HomeController::class,'redirect']);
 
 Route::get('/view_category', [AdminController::class, 'view_category'])->name('admin.view_category');
