@@ -26,23 +26,25 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the incoming request data
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-
-        // Create a new category using the validated data
+    
+        $imagePath = $request->file('image') ? $request->file('image')->store('images/categories', 'public') : null;
+    
         Category::create([
             'name' => $request->name,
             'description' => $request->description,
             'parent_id' => $request->parent_id,
+            'image_path' => $imagePath,
         ]);
-
-        // Redirect to the route that shows the list of categories
+    
         return redirect()->route('admin.view_category')->with('success', 'Category created successfully.');
     }
+    
 
     public function edit(Category $category)
     {

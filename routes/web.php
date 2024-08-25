@@ -46,6 +46,7 @@ Route::post('add_cart/{id}', [HomeController::class, 'add_cart'])->name('add_car
 Route::get('/show_cart', [HomeController::class, 'show_cart'])->name('show_cart');
 Route::post('/cart/update/{id}', [HomeController::class, 'update_cart'])->name('cart.update');
 Route::get('/cart/delete/{id}', [HomeController::class, 'delete_cart'])->name('cart.delete');
+Route::get('/cash_order', [HomeController::class, 'cash_order'])->name('cash_order');
 
 
 

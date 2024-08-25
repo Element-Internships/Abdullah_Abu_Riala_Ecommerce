@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
+use App\Models\Order;
 
 class HomeController extends Controller
 {
@@ -70,10 +71,12 @@ class HomeController extends Controller
     
 
     public function add_cart(Request $request, $id)
-    {
-        if (Auth::id()) {
-            $user = Auth::user();
-            $product = Product::find($id);
+{
+    if (Auth::check()) {
+        $user = Auth::user(); // Ensure this is not null
+        $product = Product::find($id);
+
+        if ($product) {
             $cart = new Cart;
 
             $cart->name = $user->name;
@@ -96,9 +99,13 @@ class HomeController extends Controller
 
             return redirect()->back()->with('message', 'Product added to cart successfully');
         } else {
-            return redirect('login');
+            return redirect()->back()->with('error', 'Product not found');
         }
+    } else {
+        return redirect('login');
     }
+}
+
 
     public function show_cart()
     {
@@ -140,4 +147,37 @@ class HomeController extends Controller
 
         return redirect()->route('show_cart')->with('message', 'Product removed from cart');
     }
+
+
+    public function cash_order()
+    {
+        $user = Auth::user();
+        $userId = $user->id;
+        $data = Cart::where('user_id', $userId)->get();
+    
+        foreach ($data as $item) {
+            $order = new Order;
+    
+            $order->name = $item->name;
+            $order->email = $item->email;
+            $order->phone = $item->phone;
+            $order->address = $item->address;
+            $order->user_id = $item->User_id;
+            $order->product_title = $item->product_tittle;
+            $order->price = $item->price;
+            $order->quantity = $item->quantity;
+            $order->image = $item->image;
+            $order->product_id = $item->product_id;
+            $order->payment_status = 'cash on delivery';
+            $order->delivery_status = 'Processing';
+    
+            $order->save();
+
+            $cart = Cart::find($item->id);
+            $cart->delete();
+        }
+    
+        return redirect()->back()->with('message', 'Order placed successfully');
+    }
+    
 }

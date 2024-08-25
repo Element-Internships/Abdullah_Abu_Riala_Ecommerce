@@ -12,18 +12,17 @@
             <div class="content-wrapper">
                 <!-- Flash Message -->
                 @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        {{ session('success') }}
-    </div>
-@endif
-
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ session('success') }}
+                    </div>
+                @endif
 
                 <h2>Create New Category</h2>
                 <!-- Form to Create New Category -->
-                <form action="{{ route('categories.store') }}" method="POST">
+                <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="name">Category Name</label>
@@ -40,9 +39,14 @@
                         <select id="parent_id" name="parent_id" class="form-control">
                             <option value="">None</option>
                             @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Category Image</label>
+                        <input type="file" id="image" name="image" class="form-control">
                     </div>
 
                     <button type="submit" class="btn btn-primary">Create Category</button>
@@ -54,6 +58,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Image</th> <!-- Add this column -->
                             <th>Name</th>
                             <th>Description</th>
                             <th>Parent Category</th>
@@ -64,12 +69,17 @@
                         @foreach($categories as $category)
                         <tr>
                             <td>{{ $category->id }}</td>
+                            <td>
+                                @if($category->image_path)
+                                    <img src="{{ asset('storage/' . $category->image_path) }}" alt="{{ $category->name }}" width="50">
+                                @else
+                                    No Image
+                                @endif
+                            </td>
                             <td>{{ $category->name }}</td>
                             <td>{{ $category->description }}</td>
                             <td>{{ $category->parent ? $category->parent->name : 'None' }}</td>
                             <td>
-                                <!-- Edit Button -->
-                                <!-- Delete Button (use form to handle DELETE request) -->
                                 <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
@@ -80,6 +90,7 @@
                         @endforeach
                     </tbody>
                 </table>
+
             </div>  
         </div>
 
