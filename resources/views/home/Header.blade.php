@@ -61,26 +61,30 @@
             <div class="col-lg-6">
                 <nav class="header__menu">
                     <ul>
-                    <li class="active"><a href="{{ url('/') }}">Home</a></li>
-                    <li><a href="./shop-grid.html">Shop</a></li>
+                        <li class="active"><a href="{{ url('/') }}">Home</a></li>
+                        <li><a href="./shop-grid.html">Shop</a></li>
                         <li><a href="#">Pages</a>
                             <ul class="header__menu__dropdown">
-                                <li><a href="./shop-details.html">Shop Details</a></li>
-                                <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                                <li><a href="{{ url('show_cart') }}">Shopping Cart</a></li>
                                 <li><a href="./checkout.html">Checkout</a></li>
                             </ul>
                         </li>
                         <li><a href="./blog.html">Blog</a></li>
                         <li><a href="{{ route('contact') }}">Contact</a></li>
-                        </ul>
+                    </ul>
                 </nav>
             </div>
             <div class="col-lg-3">
                 <div class="header__cart">
                     <ul>
-                        <li><a href="shoping-cart.html"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                        <li>
+                            <a href="{{ url('show_cart') }}">
+                                <i class="fa fa-shopping-bag"></i>
+                                <span>{{ $totalItems }}</span>
+                            </a>
+                        </li>
                     </ul>
-                    <div class="header__cart__price">item: <span>$150.00</span></div>
+                    <div class="header__cart__price">item: <span>${{ number_format($totalPrice, 2) }}</span></div>
                 </div>
             </div>
         </div>
