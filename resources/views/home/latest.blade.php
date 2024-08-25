@@ -9,7 +9,7 @@
                         @foreach($latestProducts->chunk(3) as $chunk) <!-- Chunk products into groups of 3 -->
                             <div class="latest-prdouct__slider__item">
                                 @foreach($chunk as $product)
-                                    <a href="#" class="latest-product__item">
+                                    <a href="{{url('product_details',$product->id)}}" class="latest-product__item">
                                         <div class="latest-product__item__pic">
                                             <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}">
                                         </div>

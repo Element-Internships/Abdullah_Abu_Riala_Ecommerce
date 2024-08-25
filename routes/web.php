@@ -41,6 +41,11 @@ Route::get('/view_category', [AdminController::class, 'view_category'])->name('a
 Route::get('/view_product', [AdminController::class, 'view_product'])->name('admin.view_product');
 Route::get('/update_product/{id}', [AdminController::class, 'update_product'])->name('admin.update_product');
 Route::post('update_product_confirm/{product}', [AdminController::class, 'update_product_confirm'])->name('update_product_confirm');
+Route::get('product_details/{id}', [HomeController::class, 'product_details'])->name('product_details');
+Route::get('add_cart/{id}', [HomeController::class, 'add_cart'])->name('add_cart');
+
+
+
 // Category creation form and store routes
 Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
 Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');

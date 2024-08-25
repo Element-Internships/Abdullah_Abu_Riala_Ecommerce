@@ -30,12 +30,11 @@
                 <div class="featured__item__pic set-bg" data-setbg="{{ asset('storage/' . $product->image_path) }}">
                     <ul class="featured__item__pic__hover">
                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                        <li><a href="{{url('add_cart',$product->id)}}"><i class="fa fa-shopping-cart"></i></a></li>
                     </ul>
                 </div>
                 <div class="featured__item__text">
-                    <h6><a href="#">{{ $product->name }}</a></h6>
+                    <h6><a href="{{url('product_details',$product->id)}}">{{ $product->name }}</a></h6>
                     <h5>${{ $product->price }}</h5>
                 </div>
             </div>
