@@ -129,32 +129,56 @@ class HomeController extends Controller
         }
     }
 
+
+
     public function update_cart(Request $request, $id)
-    {
-        $cart = Cart::findOrFail($id);
+{
+    $cart = Cart::findOrFail($id);
 
-        $request->validate([
-            'quantity' => 'required|integer|min:1'
+    $request->validate([
+        'quantity' => 'required|integer|min:1'
+    ]);
+
+    $newQuantity = $request->input('quantity');
+    $product = Product::findOrFail($cart->Product_id);
+    $originalPrice = $product->price;
+
+    $cart->quantity = $newQuantity;
+    $cart->price = $originalPrice * $newQuantity;
+    $cart->save();
+
+    if ($request->ajax()) {
+        return response()->json([
+            'success' => true,
+            'message' => 'Cart updated successfully',
+            'totalItems' => Cart::where('user_id', Auth::id())->sum('quantity'),
+            'totalPrice' => Cart::where('user_id', Auth::id())->sum('price')
         ]);
-
-        $newQuantity = $request->input('quantity');
-        $product = Product::findOrFail($cart->Product_id);
-        $originalPrice = $product->price;
-
-        $cart->quantity = $newQuantity;
-        $cart->price = $originalPrice * $newQuantity;
-        $cart->save();
-
-        return redirect()->route('show_cart')->with('message', 'Cart updated successfully');
     }
 
-    public function delete_cart($id)
-    {
-        $cart = Cart::findOrFail($id);
-        $cart->delete();
+    return redirect()->route('show_cart')->with('message', 'Cart updated successfully');
+}
 
-        return redirect()->route('show_cart')->with('message', 'Product removed from cart');
+
+public function delete_cart($id)
+{
+    $cart = Cart::findOrFail($id);
+    $cart->delete();
+
+    if (request()->ajax()) {
+        return response()->json([
+            'success' => true,
+            'message' => 'Product removed from cart',
+            'totalItems' => Cart::where('user_id', Auth::id())->sum('quantity'),
+            'totalPrice' => Cart::where('user_id', Auth::id())->sum('price')
+        ]);
     }
+
+    return redirect()->route('show_cart')->with('message', 'Product removed from cart');
+}
+
+
+
 
 
     public function cash_order()
