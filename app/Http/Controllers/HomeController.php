@@ -71,50 +71,47 @@ class HomeController extends Controller
     
 
     public function add_cart(Request $request, $id)
-    {
-        if (Auth::check()) {
-            $user = Auth::user(); // Ensure this is not null
-            $product = Product::find($id);
-    
-            if ($product) {
-                $cart = new Cart;
-    
-                $cart->name = $user->name;
-                $cart->email = $user->email;
-                $cart->phone = $user->phone;
-                $cart->address = $user->address;
-                $cart->user_id = $user->id;
-    
-                $cart->product_tittle = $product->name;
-                $cart->price = $product->price;
-                $cart->image = $product->image_path;
-                $cart->Product_id = $product->id;
-    
-                $quantity = $request->input('quantity', 1); 
-                $cart->quantity = $quantity;
-    
-                $cart->price = $product->price * $quantity;
-    
-                $cart->save();
-    
-                // Calculate new total items and price
-                $cartItems = Cart::where('user_id', $user->id)->get();
-                $totalItems = $cartItems->sum('quantity');
-                $totalPrice = $cartItems->sum('price');
-    
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Product added to cart successfully',
-                    'totalItems' => $totalItems,
-                    'totalPrice' => $totalPrice
-                ]);
-            } else {
-                return response()->json(['success' => false, 'message' => 'Product not found']);
-            }
+{
+    \Log::info('Add to cart request received', $request->all());
+
+    if (Auth::check()) {
+        $user = Auth::user();
+        $product = Product::find($id);
+
+        if ($product) {
+            $cart = new Cart;
+            $cart->name = $user->name;
+            $cart->email = $user->email;
+            $cart->phone = $user->phone;
+            $cart->address = $user->address;
+            $cart->user_id = $user->id;
+            $cart->product_tittle = $product->name;
+            $cart->price = $product->price;
+            $cart->image = $product->image_path;
+            $cart->Product_id = $product->id;
+            $quantity = $request->input('quantity', 1);
+            $cart->quantity = $quantity;
+            $cart->price = $product->price * $quantity;
+            $cart->save();
+
+            $cartItems = Cart::where('user_id', $user->id)->get();
+            $totalItems = $cartItems->sum('quantity');
+            $totalPrice = $cartItems->sum('price');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Product added to cart successfully',
+                'totalItems' => $totalItems,
+                'totalPrice' => $totalPrice
+            ]);
         } else {
-            return response()->json(['success' => false, 'message' => 'Please log in to add items to the cart']);
+            return response()->json(['success' => false, 'message' => 'Product not found']);
         }
+    } else {
+        return response()->json(['success' => false, 'message' => 'Please log in to add items to the cart']);
     }
+}
+
     
 
 

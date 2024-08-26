@@ -50,6 +50,8 @@
         </div>
     </div>
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.add-to-cart').forEach(function(link) {
@@ -73,7 +75,7 @@
                         document.getElementById('cart-item-count').textContent = data.totalItems;
                         document.getElementById('cart-total-price').textContent = `$${data.totalPrice.toFixed(2)}`;
                         
-                        // Optionally, show a success message
+                        // Show success message
                         Swal.fire({
                             icon: 'success',
                             title: 'Added to Cart',
@@ -82,6 +84,7 @@
                             showConfirmButton: false
                         });
                     } else {
+                        // Show error message
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -98,4 +101,3 @@
         });
     });
 </script>
-
