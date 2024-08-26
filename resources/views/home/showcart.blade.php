@@ -78,6 +78,19 @@
         .btn-remove:hover {
             text-decoration: underline;
         }
+
+        .quantity {
+            display: inline-block;
+            width: 80px;
+        }
+
+        .pro-qty input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -102,57 +115,61 @@
 
         <!-- Cart Section -->
         <section class="cart-section content spad">
-            <div class="container">
-                <h2>Your Cart</h2>
+    <div class="container">
+        <h2>Your Cart</h2>
 
-                @if ($cartItems->isEmpty())
-                    <p>Your cart is empty :(</p>
-                @else
-                    <table class="cart-table">
-                        <thead>
-                            <tr>
-                                <th>Product Image</th>
-                                <th>Product Title</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($cartItems as $item)
-                                <tr>
-                                    <td><img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_tittle }}"></td>
-                                    <td>{{ $item->product_tittle }}</td>
-                                    <td>
-                                        <form action="{{ route('cart.update', $item->id) }}" method="POST">
-                                            @csrf
+        @if ($cartItems->isEmpty())
+            <p>Your cart is empty :(</p>
+        @else
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product Image</th>
+                        <th>Product Title</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($cartItems as $item)
+                        <tr>
+                            <td><img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_tittle }}"></td>
+                            <td>{{ $item->product_tittle }}</td>
+                            <td>
+                                <form action="{{ route('cart.update', $item->id) }}" method="POST">
+                                    @csrf
+                                    <div class="quantity">
+                                        <div class="pro-qty">
                                             <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" required>
-                                            <button type="submit" class="btn-update">Update</button>
-                                        </form>
-                                    </td>
-                                    <td>${{ number_format($item->price / $item->quantity, 2) }}</td>
-                                    <td>${{ number_format($item->price, 2) }}</td>
-                                    <td>
-                                        <a href="{{ route('cart.delete', $item->id) }}" class="btn-remove">Remove</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                        </div>
+                                    </div>
+                            </td>
+                            <td>${{ number_format($item->price / $item->quantity, 2) }}</td>
+                            <td>${{ number_format($item->price, 2) }}</td>
+                            <td>
+                                <button type="submit" class="btn-update">Update</button>
+                                <a href="{{ route('cart.delete', $item->id) }}" class="btn-remove">Remove</a>
+                                </form> <!-- Move the form closing tag here -->
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
-                    <div class="cart-total">
-                        <h3>Total: ${{ number_format($cartItems->sum('price'), 2) }}</h3>
-                    </div>
-
-                    <!-- Checkout Options -->
-                    <div class="checkout-options">
-                        <a href="{{ route('cash_order') }}" class="btn-checkout btn-cash">Proceed with Cash on Delivery</a>
-                        <a href="#" class="btn-checkout btn-card">Proceed with Card Payment</a>
-                    </div>
-                @endif
+            <div class="cart-total">
+                <h3>Total: ${{ number_format($cartItems->sum('price'), 2) }}</h3>
             </div>
-        </section>
+
+            <!-- Checkout Options -->
+            <div class="checkout-options">
+                <a href="{{ route('cash_order') }}" class="btn-checkout btn-cash">Proceed with Cash on Delivery</a>
+                <a href="#" class="btn-checkout btn-card">Proceed with Card Payment</a>
+            </div>
+        @endif
+    </div>
+</section>
 
         <style>
             .checkout-options {
