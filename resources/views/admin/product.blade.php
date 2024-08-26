@@ -62,47 +62,49 @@
           <!-- Product List -->
           <h2 class="mt-5">Product List</h2>
           @if($products->isNotEmpty())
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Price</th>
-                  <th>Stock Quantity</th>
-                  <th>Category</th>
-                  <th>Image</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($products as $product)
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
                   <tr>
-                    <td>{{ $product->id }}</td>
-                    <td>{{ $product->name }}</td>
-                    <td>{{ $product->description }}</td>
-                    <td>${{ number_format($product->price, 2) }}</td>
-                    <td>{{ $product->stock_quantity }}</td>
-                    <td>{{ $product->category->name ?? 'N/A' }}</td>
-                    <td>
-                      @if($product->image_path)
-                        <img src="{{ asset('storage/' . $product->image_path) }}" alt="Product Image" width="100">
-                      @else
-                        No Image
-                      @endif
-                    </td>
-                    <td>
-                      <a href="{{ url('update_product', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                      <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
-                      </form>
-                    </td>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Stock Quantity</th>
+                    <th>Category</th>
+                    <th>Image</th>
+                    <th>Actions</th>
                   </tr>
-                @endforeach
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  @foreach($products as $product)
+                    <tr>
+                      <td>{{ $product->id }}</td>
+                      <td>{{ $product->name }}</td>
+                      <td>{{ Str::limit($product->description, 50) }}</td>
+                      <td>${{ number_format($product->price, 2) }}</td>
+                      <td>{{ $product->stock_quantity }}</td>
+                      <td>{{ $product->category->name ?? 'N/A' }}</td>
+                      <td>
+                        @if($product->image_path)
+                          <img src="{{ asset('storage/' . $product->image_path) }}" alt="Product Image" width="100">
+                        @else
+                          No Image
+                        @endif
+                      </td>
+                      <td>
+                        <a href="{{ url('update_product', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
+                        </form>
+                      </td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
           @else
             <p>No products found.</p>
           @endif
