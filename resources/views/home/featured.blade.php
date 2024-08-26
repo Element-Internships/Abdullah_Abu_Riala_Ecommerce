@@ -50,17 +50,52 @@
         </div>
     </div>
 </section>
-<!-- Featured Section End -->
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.add-to-cart').forEach(function(link) {
             link.addEventListener('click', function(event) {
                 event.preventDefault();
                 var productId = this.getAttribute('data-id');
-                var form = document.getElementById('form-' + productId);
-                form.submit();
+                var quantity = 1; // Default quantity
+
+                fetch(`{{ url('add_cart') }}/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ quantity: quantity })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update cart UI dynamically
+                        document.getElementById('cart-item-count').textContent = data.totalItems;
+                        document.getElementById('cart-total-price').textContent = `$${data.totalPrice.toFixed(2)}`;
+                        
+                        // Optionally, show a success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Added to Cart',
+                            text: data.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             });
         });
     });
 </script>
+

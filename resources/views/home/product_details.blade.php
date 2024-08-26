@@ -40,7 +40,7 @@
                         <h3>{{ $product->name }}</h3>
                         <h4>${{ $product->price }}</h4>
                         <p>Product Description : {{ $product->description }}</p>
-                        <form action="{{ url('add_cart', $product->id) }}" method="POST">
+                        <form id="add-to-cart-form" action="{{ route('add_cart', $product->id) }}" method="POST">
                             @csrf
                             <div class="product__details__quantity">
                                 <div class="quantity">
@@ -51,7 +51,6 @@
                             </div>
                             <button type="submit" class="primary-btn">ADD TO CART</button>
                         </form>
-
                     </div>
                 </div>
             </div>

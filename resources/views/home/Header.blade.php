@@ -80,11 +80,11 @@
                         <li>
                             <a href="{{ url('show_cart') }}">
                                 <i class="fa fa-shopping-bag"></i>
-                                <span>{{ $totalItems }}</span>
+                                <span id="cart-item-count">{{ $totalItems }}</span>
                             </a>
                         </li>
                     </ul>
-                    <div class="header__cart__price">item: <span>${{ number_format($totalPrice, 2) }}</span></div>
+                    <div class="header__cart__price">item: <span id="cart-total-price">${{ number_format($totalPrice, 2) }}</span></div>
                 </div>
             </div>
         </div>
