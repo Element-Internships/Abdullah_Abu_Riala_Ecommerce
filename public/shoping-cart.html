@@ -212,75 +212,125 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Register</h2>
+                        <h2>Shopping Cart</h2>
                         <div class="breadcrumb__option">
                             <a href="./index.html">Home</a>
-                            <span>Register</span>
+                            <span>Shopping Cart</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Breadcrumb Section End -->
 
-    <!-- Contact Form Begin -->
-    <div class="contact-form spad">
+    <!-- Shoping Cart Section Begin -->
+    <section class="shoping-cart spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="contact__form__title">
-                        <h2>Create New Account</h2>
+                    <div class="shoping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="shoping__product">Products</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="shoping__cart__item">
+                                        <img src="img/cart/cart-1.jpg" alt="">
+                                        <h5>Vegetable’s Package</h5>
+                                    </td>
+                                    <td class="shoping__cart__price">
+                                        $55.00
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input type="text" value="1">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="shoping__cart__total">
+                                        $110.00
+                                    </td>
+                                    <td class="shoping__cart__item__close">
+                                        <span class="icon_close"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="shoping__cart__item">
+                                        <img src="img/cart/cart-2.jpg" alt="">
+                                        <h5>Fresh Garden Vegetable</h5>
+                                    </td>
+                                    <td class="shoping__cart__price">
+                                        $39.00
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input type="text" value="1">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="shoping__cart__total">
+                                        $39.99
+                                    </td>
+                                    <td class="shoping__cart__item__close">
+                                        <span class="icon_close"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="shoping__cart__item">
+                                        <img src="img/cart/cart-3.jpg" alt="">
+                                        <h5>Organic Bananas</h5>
+                                    </td>
+                                    <td class="shoping__cart__price">
+                                        $69.00
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input type="text" value="1">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="shoping__cart__total">
+                                        $69.99
+                                    </td>
+                                    <td class="shoping__cart__item__close">
+                                        <span class="icon_close"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="col-lg-8 offset-2">
-                    <!-- Start of Laravel Blade Form -->
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label" for="name">First Name <span class="text-danger">*</span></label>
-                                <input type="text" id="name" name="name" class="form-control form-control-lg" :value="old('name')" required autofocus autocomplete="name" />
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label" for="email">Email <span class="text-danger">*</span></label>
-                                <input type="email" id="email" name="email" class="form-control form-control-lg" :value="old('email')" required autocomplete="username" />
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label" for="phone">Phone <span class="text-danger">*</span></label>
-                                <input type="number" id="phone" name="phone" class="form-control form-control-lg" :value="old('phone')" required autocomplete="phone" />
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label" for="address">Address <span class="text-danger">*</span></label>
-                                <input type="text" id="address" name="address" class="form-control form-control-lg" :value="old('address')" required autocomplete="address" />
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label" for="password">Password <span class="text-danger">*</span></label>
-                                <input type="password" id="password" name="password" class="form-control form-control-lg" required autocomplete="new-password" />
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label" for="password_confirmation">Confirm Password <span class="text-danger">*</span></label>
-                                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control form-control-lg" required autocomplete="new-password" />
-                            </div>
-                            <div class="col-md-12 mb-4">
-                                <div class="d-flex justify-content-end pt-3">
-                                    <button type="reset" class="btn btn-light btn-lg">Reset all</button>
-                                    <button type="submit" class="btn btn-primary btn-lg ml-2">Register</button>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-4 text-center">
-                                <a href="{{ route('login') }}" class="text-dark" style="text-decoration: underline;">If you have an account, click here to login.</a>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- End of Laravel Blade Form -->
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="shoping__cart__btns">
+                        <a href="index.html" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="shoping__checkout" style="margin-top:0px;">
+                        <h5>Cart Total</h5>
+                        <ul>
+                            <li>Total <span>$454.98</span></li>
+                        </ul>
+                        <a href="checkout.html" class="primary-btn">PROCEED TO CHECKOUT</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Contact Form End -->
+    </section>
+    <!-- Shoping Cart Section End -->
 
-    <!-- Footer Section Begin -->
     <footer class="footer spad">
         <div class="container">
             <div class="row">

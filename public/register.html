@@ -234,46 +234,79 @@
                     </div>
                 </div>
                 <div class="col-lg-8 offset-2">
-                    <!-- Start of Laravel Blade Form -->
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+                    <form>
                         <div class="row">
                             <div class="col-md-6 mb-4">
-                                <label class="form-label" for="name">First Name <span class="text-danger">*</span></label>
-                                <input type="text" id="name" name="name" class="form-control form-control-lg" :value="old('name')" required autofocus autocomplete="name" />
+                              <div data-mdb-input-init class="form-outline">
+                                <label class="form-label" for="form3Example1m">First name <span class="text-danger">*</span></label>
+                                <input type="text" id="form3Example1m" class="form-control form-control-lg" />
+                              </div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                <label class="form-label" for="email">Email <span class="text-danger">*</span></label>
-                                <input type="email" id="email" name="email" class="form-control form-control-lg" :value="old('email')" required autocomplete="username" />
+                              <div data-mdb-input-init class="form-outline">
+                                <label class="form-label" for="form3Example1n">Last name <span class="text-danger">*</span></label>
+                                <input type="text" id="form3Example1n" class="form-control form-control-lg" />
+                              </div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                <label class="form-label" for="phone">Phone <span class="text-danger">*</span></label>
-                                <input type="number" id="phone" name="phone" class="form-control form-control-lg" :value="old('phone')" required autocomplete="phone" />
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example8">Address <span class="text-danger">*</span></label>
+                                    <input type="text" id="form3Example8" class="form-control form-control-lg" />
+                                </div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                <label class="form-label" for="address">Address <span class="text-danger">*</span></label>
-                                <input type="text" id="address" name="address" class="form-control form-control-lg" :value="old('address')" required autocomplete="address" />
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example8">City <span class="text-danger">*</span></label>
+                                    <input type="text" id="form3Example8" class="form-control form-control-lg" />
+                                </div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                <label class="form-label" for="password">Password <span class="text-danger">*</span></label>
-                                <input type="password" id="password" name="password" class="form-control form-control-lg" required autocomplete="new-password" />
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example8">ZIP Code <span class="text-danger">*</span></label>
+                                    <input type="text" id="form3Example8" class="form-control form-control-lg" />
+                                </div>
                             </div>
                             <div class="col-md-6 mb-4">
-                                <label class="form-label" for="password_confirmation">Confirm Password <span class="text-danger">*</span></label>
-                                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control form-control-lg" required autocomplete="new-password" />
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example8">Country <span class="text-danger">*</span></label>
+                                    <input type="text" id="form3Example8" class="form-control form-control-lg" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example8">Phone <span class="text-danger">*</span></label>
+                                    <input type="text" id="form3Example8" class="form-control form-control-lg" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example8">Email <span class="text-danger">*</span></label>
+                                    <input type="text" id="form3Example8" class="form-control form-control-lg" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example8">Password <span class="text-danger">*</span></label>
+                                    <input type="password" id="form3Example8" class="form-control form-control-lg" />
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example8">Confirm Password <span class="text-danger">*</span></label>
+                                    <input type="password" id="form3Example8" class="form-control form-control-lg" />
+                                </div>
                             </div>
                             <div class="col-md-12 mb-4">
                                 <div class="d-flex justify-content-end pt-3">
-                                    <button type="reset" class="btn btn-light btn-lg">Reset all</button>
-                                    <button type="submit" class="btn btn-primary btn-lg ml-2">Register</button>
+                                    <button  type="reset" class="btn btn-light btn-lg">Reset all</button>
+                                    <button  type="submit" class="btn btn-primary btn-lg ml-2">Register</button>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-4 text-center">
-                                <a href="{{ route('login') }}" class="text-dark" style="text-decoration: underline;">If you have an account, click here to login.</a>
+                                <a href="login.html" class="text-dark" style="text-decoration: underline;">If you have an account, click here to login.</a>
                             </div>
                         </div>
                     </form>
-                    <!-- End of Laravel Blade Form -->
                 </div>
             </div>
         </div>

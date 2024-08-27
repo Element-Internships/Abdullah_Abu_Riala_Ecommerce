@@ -35,6 +35,10 @@ Route::get('/contact', function () {
     return view('home.contact');
 })->name('contact');
 
+Route::get('/shop', function () {
+    return view('home.shop');
+})->name('shop');
+
 Route::get('redirect', [HomeController::class,'redirect']);
 
 Route::get('/view_category', [AdminController::class, 'view_category'])->name('admin.view_category');
