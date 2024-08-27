@@ -65,20 +65,16 @@
                         <li><a href="{{ route('shop') }}">Shop</a></li>
                         <li><a href="#">My Account</a>
                                 <ul class="header__menu__dropdown">
-                                    <li><a href="my-account.html">Edit Account</a></li>
-                                    <li><a href="my-favorites.html">My Favorites</a></li>
-                                    <li><a href="my-orders.html">My Orders</a></li>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="register.html">Register</a></li>
-                                    <li><a href="index.html">Logout</a></li>
+                                    <li><a href="{{ route('favorites') }}">My Favorites</a></li>
+                                    <li><a href="{{ route('myorders') }}"">My Orders</a></li>
+                                
                                 </ul>
                             </li>
                             <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
-                                    <li><a href="shop.html">Categories</a></li>
-                                    <li><a href="shop-details.html">Product Details</a></li>
-                                    <li><a href="shoping-cart.html">Shoping Cart</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
+                                   
+                                    <li><a href="{{ url('show_cart') }}">Shoping Cart</a></li>
+                                    <li><a href="{{ url('checkout') }}">Checkout</a></li>
                                 </ul>
                             </li>
                         <li><a href="{{ route('contact') }}">Contact</a></li>

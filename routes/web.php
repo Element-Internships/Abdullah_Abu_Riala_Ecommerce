@@ -39,6 +39,18 @@ Route::get('/shop', function () {
     return view('home.shop');
 })->name('shop');
 
+Route::get('/favorites', function () {
+    return view('home.favorites');
+})->name('favorites');
+
+Route::get('/myorders', function () {
+    return view('home.myorders');
+})->name('myorders');
+
+Route::get('/checkout', function () {
+    return view('home.checkout');
+})->name('checkout');
+
 Route::get('redirect', [HomeController::class,'redirect']);
 
 Route::get('/view_category', [AdminController::class, 'view_category'])->name('admin.view_category');
