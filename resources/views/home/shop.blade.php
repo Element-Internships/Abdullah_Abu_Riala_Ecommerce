@@ -122,10 +122,7 @@
 
                     <!-- Pagination -->
                     <div class="product__pagination mt-4">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                        {{ $products->links('pagination.custom') }}
                     </div>
                 </div>
                 <!-- Products End -->

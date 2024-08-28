@@ -215,12 +215,13 @@ public function delete_cart($id)
     }
 
     public function shop()
-{
-    $categories = Category::all();
-    $products = Product::with('category')->get(); // Fetch products with their categories
-
-    return view('home.shop', compact('categories', 'products'));
-}
+    {
+        $categories = Category::all();
+        $products = Product::with('category')->paginate(9); // Fetch products with their categories and paginate
+    
+        return view('home.shop', compact('categories', 'products'));
+    }
+    
 
 public function showCategoryProducts($id)
 {
