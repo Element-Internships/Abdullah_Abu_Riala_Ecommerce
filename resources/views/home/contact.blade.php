@@ -35,6 +35,10 @@
 @include('home.css')
 @include('home.script')
 
+<!-- Header Section Begin -->
+@include('home.css')
+@include('home.script')
+
 <header class="header">
     <div class="header__top">
         <div class="container">
@@ -95,25 +99,33 @@
                 <nav class="header__menu">
                     <ul>
                         <li class="active"><a href="{{ url('/') }}">Home</a></li>
-                        <li><a href="./shop-grid.html">Shop</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="header__menu__dropdown">
-                                <li><a href="{{ url('show_cart') }}">Shopping Cart</a></li>
-                                <li><a href="./checkout.html">Checkout</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="./blog.html">Blog</a></li>
+                        <li><a href="{{ route('shop') }}">Shop</a></li>
+                        <li><a href="#">My Account</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{{ route('favorites') }}">My Favorites</a></li>
+                                    <li><a href="{{ route('myorders') }}"">My Orders</a></li>
+                                
+                                </ul>
+                            </li>
+                            <li><a href="#">Pages</a>
+                                <ul class="header__menu__dropdown">
+                                   
+                                    <li><a href="{{ url('show_cart') }}">Shoping Cart</a></li>
+                                    <li><a href="{{ url('checkout') }}">Checkout</a></li>
+                                </ul>
+                            </li>
                         <li><a href="{{ route('contact') }}">Contact</a></li>
                     </ul>
                 </nav>
             </div>
-           
-        </div>
+            
         <div class="humberger__open">
             <i class="fa fa-bars"></i>
         </div>
     </div>
 </header>
+<!-- Header Section End -->
+
 <!-- Header Section End -->
     @include('home.Humberger')
 
