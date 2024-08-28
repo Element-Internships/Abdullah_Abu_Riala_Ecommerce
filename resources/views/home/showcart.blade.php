@@ -152,18 +152,15 @@
                             <td><img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_tittle }}"></td>
                             <td>{{ $item->product_tittle }}</td>
                             <td>
-                                <form action="{{ route('cart.update', $item->id) }}" method="POST">
-                                    @csrf
-                                    <div class="quantity">
-                                        <div class="pro-qty">
+                            <form action="{{ route('cart.update', $item->id) }}" method="POST">
+                                            @csrf
                                             <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" required>
-                                        </div>
-                                    </div>
-                            </td>
-                            <td>${{ number_format($item->price / $item->quantity, 2) }}</td>
-                            <td>${{ number_format($item->price, 2) }}</td>
+                                            <button type="submit" class="btn-update">Update</button>
+                                        </form>
+                                    </td>
+                                    <td>${{ number_format($item->price / $item->quantity, 2) }}</td>
+                                    <td>${{ number_format($item->price, 2) }}</td>
                             <td>
-                                <button type="submit" class="btn-update">Update</button>
                                 <a href="{{ route('cart.delete', $item->id) }}" class="btn-remove">Remove</a>
                                 </form> <!-- Move the form closing tag here -->
                             </td>
