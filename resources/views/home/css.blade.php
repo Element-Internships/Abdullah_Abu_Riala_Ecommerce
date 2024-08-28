@@ -1,9 +1,19 @@
-<!-- css.blade.php -->
-<link rel="stylesheet" href="{{ asset('home/css/bootstrap.min.css') }}" type="text/css">
-<link rel="stylesheet" href="{{ asset('home/css/font-awesome.min.css') }}" type="text/css">
-<link rel="stylesheet" href="{{ asset('home/css/elegant-icons.css') }}" type="text/css">
-<link rel="stylesheet" href="{{ asset('home/css/nice-select.css') }}" type="text/css">
-<link rel="stylesheet" href="{{ asset('home/css/jquery-ui.min.css') }}" type="text/css">
-<link rel="stylesheet" href="{{ asset('home/css/owl.carousel.min.css') }}" type="text/css">
-<link rel="stylesheet" href="{{ asset('home/css/slicknav.min.css') }}" type="text/css">
-<link rel="stylesheet" href="{{ asset('home/css/style.css') }}" type="text/css">
+<meta charset="UTF-8">
+    <meta name="description" content="Ecommerce website for BU Internship 2024">
+    <meta name="keywords" content="Ecommerce, Bethlehem University, Frontend, Backend, Laravel, Internship">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ecommerce BU Internship</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">

@@ -4,8 +4,20 @@
 <head>
   @include('admin.css')
   <style>
+    .form-control {
+      max-height: 150px; /* Adjust the max height as needed */
+      overflow-y: auto;
+    }
+    
     .text-blue {
       color: blue;
+    }
+
+    td {
+      max-width: 300px; /* Adjust the max width as needed */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   </style>
 </head>

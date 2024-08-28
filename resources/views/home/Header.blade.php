@@ -62,15 +62,18 @@
                 <nav class="header__menu">
                     <ul>
                         <li class="active"><a href="{{ url('/') }}">Home</a></li>
-                        <li><a href="./shop-grid.html">Shop</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="header__menu__dropdown">
-                                <li><a href="{{ url('show_cart') }}">Shopping Cart</a></li>
-                                <li><a href="./checkout.html">Checkout</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="{{ route('contact') }}">Contact</a></li>
+                        <li><a href="{{ route('shop') }}">Shop</a></li>
+                        <li><a href="#">My Account</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{{ route('favorites') }}">My Favorites</a></li>
+                                    <li><a href="{{ route('myorders') }}"">My Orders</a></li>
+                                
+                                </ul>
+                            </li>
+
+                            <li><a href="{{ url('show_cart') }}">Shopping Cart</a></li>
+
+                            
                     </ul>
                 </nav>
             </div>
@@ -80,11 +83,11 @@
                         <li>
                             <a href="{{ url('show_cart') }}">
                                 <i class="fa fa-shopping-bag"></i>
-                                <span>{{ $totalItems }}</span>
+                                <span id="cart-item-count">{{ $totalItems }}</span>
                             </a>
                         </li>
                     </ul>
-                    <div class="header__cart__price">item: <span>${{ number_format($totalPrice, 2) }}</span></div>
+                    <div class="header__cart__price">item: <span id="cart-total-price">${{ number_format($totalPrice, 2) }}</span></div>
                 </div>
             </div>
         </div>

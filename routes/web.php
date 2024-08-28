@@ -35,6 +35,17 @@ Route::get('/contact', function () {
     return view('home.contact');
 })->name('contact');
 
+
+
+Route::get('/favorites', function () {
+    return view('home.favorites');
+})->name('favorites');
+
+Route::get('/myorders', function () {
+    return view('home.myorders');
+})->name('myorders');
+
+
 Route::get('redirect', [HomeController::class,'redirect']);
 
 Route::get('/view_category', [AdminController::class, 'view_category'])->name('admin.view_category');
@@ -47,6 +58,11 @@ Route::get('/show_cart', [HomeController::class, 'show_cart'])->name('show_cart'
 Route::post('/cart/update/{id}', [HomeController::class, 'update_cart'])->name('cart.update');
 Route::get('/cart/delete/{id}', [HomeController::class, 'delete_cart'])->name('cart.delete');
 Route::get('/cash_order', [HomeController::class, 'cash_order'])->name('cash_order');
+Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
+Route::get('/category/{id}', [HomeController::class, 'showCategoryProducts'])->name('category.show');
+Route::get('/stripe', [HomeController::class, 'stripe'])->name('stripe');
+Route::post('stripe', [HomeController::class, 'stripePost'])->name('stripe.post');
+
 
 
 

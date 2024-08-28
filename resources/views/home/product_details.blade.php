@@ -15,6 +15,11 @@
     <!-- Css Styles -->
     @include('home.css')
 
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -40,7 +45,7 @@
                         <h3>{{ $product->name }}</h3>
                         <h4>${{ $product->price }}</h4>
                         <p>Product Description : {{ $product->description }}</p>
-                        <form action="{{ url('add_cart', $product->id) }}" method="POST">
+                        <form id="add-to-cart-form" action="{{ route('add_cart', $product->id) }}" method="POST">
                             @csrf
                             <div class="product__details__quantity">
                                 <div class="quantity">
@@ -51,7 +56,6 @@
                             </div>
                             <button type="submit" class="primary-btn">ADD TO CART</button>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -61,6 +65,59 @@
 
     @include('home.footer')
     @include('home.script')
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('add-to-cart-form');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                const formData = new FormData(form);
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update cart UI dynamically
+                        if (document.getElementById('cart-item-count')) {
+                            document.getElementById('cart-item-count').textContent = data.totalItems;
+                        }
+                        if (document.getElementById('cart-total-price')) {
+                            document.getElementById('cart-total-price').textContent = `$${data.totalPrice.toFixed(2)}`;
+                        }
+
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Added to Cart',
+                            text: data.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        // Show error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
