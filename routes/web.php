@@ -35,9 +35,7 @@ Route::get('/contact', function () {
     return view('home.contact');
 })->name('contact');
 
-Route::get('/shop', function () {
-    return view('home.shop');
-})->name('shop');
+
 
 Route::get('/favorites', function () {
     return view('home.favorites');
@@ -63,6 +61,8 @@ Route::get('/show_cart', [HomeController::class, 'show_cart'])->name('show_cart'
 Route::post('/cart/update/{id}', [HomeController::class, 'update_cart'])->name('cart.update');
 Route::get('/cart/delete/{id}', [HomeController::class, 'delete_cart'])->name('cart.delete');
 Route::get('/cash_order', [HomeController::class, 'cash_order'])->name('cash_order');
+Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
+Route::get('/category/{id}', [HomeController::class, 'showCategoryProducts'])->name('category.show');
 
 
 

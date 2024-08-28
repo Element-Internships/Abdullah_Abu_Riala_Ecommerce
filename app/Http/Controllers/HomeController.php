@@ -211,5 +211,23 @@ public function delete_cart($id)
     
         return redirect()->back()->with('message', 'Order placed successfully');
     }
+
+    public function shop()
+{
+    $categories = Category::all();
+    $products = Product::with('category')->get(); // Fetch products with their categories
+
+    return view('home.shop', compact('categories', 'products'));
+}
+
+public function showCategoryProducts($id)
+{
+    $categories = Category::all(); // Assuming you have a Category model
+    $category = Category::findOrFail($id);
+    $products = $category->products; // Assuming the Product model has a relationship to Category
+
+    return view('home.shop', compact('categories', 'products'));
+}
+
     
 }
