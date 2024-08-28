@@ -68,8 +68,8 @@
                         <div class="sidebar__item">
                             <h4>Price Range</h4>
                             <div class="price-range-wrap">
-                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                    data-min="10" data-max="540">
+                                <div id="price-range" class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                    data-min="1" data-max="5000">
                                     <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                     <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                                     <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
@@ -95,7 +95,7 @@
                                 $categoryClass = $product->category ? Str::slug($product->category->name) : '';
                             @endphp
 
-                            <div class="col-lg-4 col-md-6 mb-4 product-item {{ $categoryClass }}" data-category-id="{{ $product->category_id }}">
+                            <div class="col-lg-4 col-md-6 mb-4 product-item {{ $categoryClass }}" data-category-id="{{ $product->category_id }}" data-price="{{ $product->price }}">
                                 <div class="featured__item">
                                     <div class="featured__item__pic set-bg" data-setbg="{{ asset('storage/' . $product->image_path) }}">
                                         <ul class="featured__item__pic__hover">
@@ -138,29 +138,67 @@
     @include('home.script')
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const categoryLinks = document.querySelectorAll('.filter-category');
             const productItems = document.querySelectorAll('.product-item');
+            
+            // Initialize the price range slider
+            const priceRange = document.getElementById('price-range');
+            const minAmount = document.getElementById('minamount');
+            const maxAmount = document.getElementById('maxamount');
+            
+            $(priceRange).slider({
+                range: true,
+                min: $(priceRange).data('min'),
+                max: $(priceRange).data('max'),
+                values: [$(priceRange).data('min'), $(priceRange).data('max')],
+                slide: function (event, ui) {
+                    minAmount.value = `$${ui.values[0]}`;
+                    maxAmount.value = `$${ui.values[1]}`;
+                    filterProducts();
+                }
+            });
 
+            // Initial display
+            minAmount.value = `$${$(priceRange).slider('values', 0)}`;
+            maxAmount.value = `$${$(priceRange).slider('values', 1)}`;
+            
+            function filterProducts() {
+                const minPrice = $(priceRange).slider('values', 0);
+                const maxPrice = $(priceRange).slider('values', 1);
+                const categoryId = document.querySelector('.filter-category.active')?.getAttribute('data-category-id') || 'all';
+                
+                productItems.forEach(item => {
+                    const itemCategoryId = item.getAttribute('data-category-id');
+                    const itemPrice = parseFloat(item.getAttribute('data-price'));
+                    
+                    if (
+                        (categoryId === 'all' || itemCategoryId === categoryId) &&
+                        itemPrice >= minPrice &&
+                        itemPrice <= maxPrice
+                    ) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+
+            // Handle category filter
             categoryLinks.forEach(link => {
                 link.addEventListener('click', function (e) {
                     e.preventDefault();
-                    const categoryId = this.getAttribute('data-category-id');
-
-                    productItems.forEach(item => {
-                        const itemCategoryId = item.getAttribute('data-category-id');
-                        if (categoryId === 'all' || itemCategoryId === categoryId) {
-                            item.style.display = 'block';
-                        } else {
-                            item.style.display = 'none';
-                        }
-                    });
+                    categoryLinks.forEach(link => link.classList.remove('active'));
+                    this.classList.add('active');
+                    filterProducts();
                 });
             });
 
-            document.querySelectorAll('.add-to-cart').forEach(function(link) {
-                link.addEventListener('click', function(event) {
+            // Handle add to cart
+            document.querySelectorAll('.add-to-cart').forEach(function (link) {
+                link.addEventListener('click', function (event) {
                     event.preventDefault();
                     var productId = this.getAttribute('data-id');
                     var quantity = 1; // Default quantity
