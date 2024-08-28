@@ -71,7 +71,7 @@
                                 </ul>
                             </li>
 
-                            <li><a href="{{ url('show_cart') }}">Shopping cart Cart</a></li>
+                            <li><a href="{{ url('show_cart') }}">Shopping Cart</a></li>
 
                             
                     </ul>

@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
 use App\Models\Order;
-
+use Stripe\Stripe;
+use Stripe\Charge;
 class HomeController extends Controller
 {
      
@@ -230,4 +232,67 @@ public function showCategoryProducts($id)
 }
 
     
+
+public function stripe()
+{
+    if (Auth::check()) {
+        $user = Auth::user();
+        $cartItems = Cart::where('user_id', $user->id)->get();
+        $totalPrice = $cartItems->sum('price');
+
+        return view('home.stripe', compact('totalPrice'));
+    } else {
+        return redirect('login');
+    }
+}
+
+
+public function stripePost(Request $request)
+{
+    Stripe::setApiKey(env('STRIPE_SECRET'));
+
+    try {
+        Charge::create([
+            "amount" => $request->amount * 100, // Convert amount to cents
+            "currency" => "usd",
+            "source" => $request->stripeToken,
+            "description" => "Payment for order."
+        ]);
+
+        $user = Auth::user();
+        $userId = $user->id;
+        $data = Cart::where('user_id', $userId)->get();
+    
+        foreach ($data as $item) {
+            $order = new Order;
+    
+            $order->name = $item->name;
+            $order->email = $item->email;
+            $order->phone = $item->phone;
+            $order->address = $item->address;
+            $order->user_id = $item->User_id;
+            $order->product_title = $item->product_tittle;
+            $order->price = $item->price;
+            $order->quantity = $item->quantity;
+            $order->image = $item->image;
+            $order->product_id = $item->product_id;
+            $order->payment_status = 'Paid';
+            $order->delivery_status = 'Processing';
+    
+            $order->save();
+
+            $cart = Cart::find($item->id);
+            $cart->delete();
+        }
+
+        Session::flash('success', 'Payment successful!');
+    } catch (\Exception $e) {
+        Session::flash('error', $e->getMessage());
+    }
+
+    return back();
+}
+
+
+
 }

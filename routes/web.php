@@ -45,9 +45,6 @@ Route::get('/myorders', function () {
     return view('home.myorders');
 })->name('myorders');
 
-Route::get('/checkout', function () {
-    return view('home.checkout');
-})->name('checkout');
 
 Route::get('redirect', [HomeController::class,'redirect']);
 
@@ -63,6 +60,9 @@ Route::get('/cart/delete/{id}', [HomeController::class, 'delete_cart'])->name('c
 Route::get('/cash_order', [HomeController::class, 'cash_order'])->name('cash_order');
 Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
 Route::get('/category/{id}', [HomeController::class, 'showCategoryProducts'])->name('category.show');
+Route::get('/stripe', [HomeController::class, 'stripe'])->name('stripe');
+Route::post('stripe', [HomeController::class, 'stripePost'])->name('stripe.post');
+
 
 
 

@@ -176,7 +176,7 @@
             <!-- Checkout Options -->
             <div class="checkout-options">
                 <a href="{{ route('cash_order') }}" class="btn-checkout btn-cash">Proceed with Cash on Delivery</a>
-                <a href="{{ url('checkout') }}" class="btn-checkout btn-card">Proceed with Card Payment</a>
+                <a href="{{ url('stripe') }}" class="btn-checkout btn-card">Proceed with Card Payment</a>
             </div>
         @endif
     </div>
