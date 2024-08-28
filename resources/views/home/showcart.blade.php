@@ -112,7 +112,6 @@
                 {{ session('message') }}
             </div>
         @endif
-
         <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
         <div class="container">
             <div class="row">
@@ -120,7 +119,7 @@
                     <div class="breadcrumb__text">
                         <h2>Shopping Cart</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Home</a>
+                            <a href="{{ url('/') }}">Home</a>
                             <span>Shopping Cart</span>
                         </div>
                     </div>
@@ -128,7 +127,6 @@
             </div>
         </div>
     </section>
-    
         <!-- Cart Section -->
         <section class="cart-section content spad">
     <div class="container">
@@ -181,7 +179,7 @@
             <!-- Checkout Options -->
             <div class="checkout-options">
                 <a href="{{ route('cash_order') }}" class="btn-checkout btn-cash">Proceed with Cash on Delivery</a>
-                <a href="#" class="btn-checkout btn-card">Proceed with Card Payment</a>
+                <a href="{{ url('checkout') }}" class="btn-checkout btn-card">Proceed with Card Payment</a>
             </div>
         @endif
     </div>

@@ -70,14 +70,10 @@
                                 
                                 </ul>
                             </li>
-                            <li><a href="#">Pages</a>
-                                <ul class="header__menu__dropdown">
-                                   
-                                    <li><a href="{{ url('show_cart') }}">Shoping Cart</a></li>
-                                    <li><a href="{{ url('checkout') }}">Checkout</a></li>
-                                </ul>
-                            </li>
-                        <li><a href="{{ route('contact') }}">Contact</a></li>
+
+                            <li><a href="{{ url('show_cart') }}">Shopping cart Cart</a></li>
+
+                            
                     </ul>
                 </nav>
             </div>

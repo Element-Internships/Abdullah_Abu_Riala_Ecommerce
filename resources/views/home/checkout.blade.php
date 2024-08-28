@@ -39,8 +39,8 @@
                     <div class="breadcrumb__text">
                         <h2>Checkout</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Home</a>
-                            <span>Checkout</span>
+                        <a href="{{ url('/') }}">Home</a>
+                        <span>Checkout with card</span>
                         </div>
                     </div>
                 </div>
