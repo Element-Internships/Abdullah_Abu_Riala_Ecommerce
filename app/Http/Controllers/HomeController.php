@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Favorite;
+use App\Models\Contact;
 
 use Stripe\Stripe;
 use Stripe\Charge;
@@ -373,4 +374,28 @@ public function myOrders()
     // Optionally, handle the case where the order doesn't exist or is not in 'Processing' status
     return redirect()->back()->with('error', 'Unable to cancel order.');
 }
+
+public function contact()
+    {
+        return view('home.contact');
+    }
+
+    
+    public function submitContact(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'message' => 'required|string',
+        ]);
+    
+        Contact::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'message' => $request->message,
+        ]);
+    
+        return redirect()->back()->with('success', 'Your message has been sent!');
+    }
+
 }

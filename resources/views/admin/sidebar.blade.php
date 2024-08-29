@@ -106,6 +106,15 @@
               <span class="menu-title">Orders</span>
             </a>
           </li>
+
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{{url ('service')}}">
+              <span class="menu-icon">
+                <i class="mdi mdi-table-large"></i>
+              </span>
+              <span class="menu-title">Customer messages</span>
+            </a>
+          </li>
          
         </ul>
       </nav>

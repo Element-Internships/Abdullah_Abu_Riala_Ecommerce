@@ -29,11 +29,14 @@
         <div class="loader"></div>
     </div>
 
+   
+
+<!-- Header Section Begin -->
+@include('home.css')
+@include('home.script')
+
     @include('home.header')
     @include('home.Humberger')
-
-
-
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
         <div class="container">
@@ -42,7 +45,7 @@
                     <div class="breadcrumb__text">
                         <h2>Contact Us</h2>
                         <div class="breadcrumb__option">
-                            <a href="{{ url('/') }}">Home</a>
+                            <a href="./index.html">Home</a>
                             <span>Contact Us</span>
                         </div>
                     </div>
@@ -62,28 +65,35 @@
                     </div>
                 </div>
             </div>
-            <form action="#">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <input type="text" placeholder="Your name">
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <input type="text" placeholder="Your Email">
-                    </div>
-                    <div class="col-lg-12 text-center">
-                        <textarea placeholder="Your message"></textarea>
-                        <button type="submit" class="site-btn">SEND MESSAGE</button>
-                    </div>
-                </div>
-            </form>
+            <form action="{{ route('contact.submit') }}" method="POST">
+    @csrf
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <input type="text" name="name" placeholder="Your name" required>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <input type="email" name="email" placeholder="Your Email" required>
+        </div>
+        <div class="col-lg-12 text-center">
+            <textarea name="message" placeholder="Your message" required></textarea>
+            <button type="submit" class="site-btn">SEND MESSAGE</button>
+        </div>
+    </div>
+</form>
         </div>
     </div>
     <!-- Contact Form End -->
 
-=
-
     @include('home.footer')
-    @include('home.script')
+    <!-- Js Plugins -->
+    <script src="home/js/jquery-3.3.1.min.js"></script>
+    <script src="home/js/bootstrap.min.js"></script>
+    <script src="home/js/jquery.nice-select.min.js"></script>
+    <script src="home/js/jquery-ui.min.js"></script>
+    <script src="home/js/jquery.slicknav.js"></script>
+    <script src="home/js/mixitup.min.js"></script>
+    <script src="home/js/owl.carousel.min.js"></script>
+    <script src="home/js/main.js"></script>
 
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -76,4 +77,12 @@ class AdminController extends Controller
             }
         }
         
+
+        public function service()
+        {
+            $messages = Contact::all();
+            return view('admin.service', compact('messages'));
+        }
+
+
 }

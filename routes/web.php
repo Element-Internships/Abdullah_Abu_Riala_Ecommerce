@@ -66,6 +66,9 @@ Route::get('/remove_fav/{id}', [HomeController::class, 'removeFavorite'])->name(
 Route::get('/order', [AdminController::class, 'order'])->name('order');
 Route::get('/my-orders', [HomeController::class, 'myOrders'])->name('home.myorders');
 Route::post('/order/cancel/{id}', [HomeController::class, 'cancelOrder'])->name('order.cancel');
+Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
+Route::get('/service', [AdminController::class, 'service'])->name('admin.contact');
+Route::post('/contact/submit', [HomeController::class, 'submitContact'])->name('contact.submit');
 
 
 
