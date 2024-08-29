@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -51,5 +52,18 @@ class AdminController extends Controller
         }
         
 
+        public function order(){
+            $orders = Order::all();
+            return view('admin.order', compact('orders'));
+        }
+        
+        public function delivered($id){
+            $orders = order::find($id);
+            $orders->delivery_status="Delivered";
+            $orders->payment_status="Paid";
+            $orders->save();
+            return redirect()->back();
+        }
 
+        
 }

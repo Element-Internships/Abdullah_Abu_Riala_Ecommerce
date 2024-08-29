@@ -62,6 +62,8 @@ Route::get('/shop', [HomeController::class, 'shop'])->name('shop');
 Route::get('/category/{id}', [HomeController::class, 'showCategoryProducts'])->name('category.show');
 Route::get('/stripe', [HomeController::class, 'stripe'])->name('stripe');
 Route::post('stripe', [HomeController::class, 'stripePost'])->name('stripe.post');
+Route::get('/order', [AdminController::class, 'order'])->name('order');
+Route::get('/delivered/{id}', [AdminController::class, 'delivered'])->name('delivered');
 
 
 
