@@ -10,7 +10,6 @@
     <title>Ecommerce BU Internship</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
@@ -19,6 +18,15 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <style>
+        .shoping__cart__item img {
+            width: 100px; /* Adjust width as needed */
+            height: auto; /* Maintain aspect ratio */
+            object-fit: cover; /* Ensure image covers the space */
+            border-radius: 8px; /* Optional: add rounded corners */
+            margin-right: 15px; /* Space between image and text */
+        }
+    </style>
 </head>
 
 <body>
@@ -29,9 +37,6 @@
     
     @include('home.header')
     @include('home.Humberger')
-  
-    
-   
     
     <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
         <div class="container">
@@ -49,7 +54,7 @@
         </div>
     </section>
 
-    <!-- Shoping Cart Section Begin -->
+    <!-- Favorites Section Begin -->
     <section class="shoping-cart spad">
         <div class="container">
             <div class="row">
@@ -64,42 +69,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="img/cart/cart-1.jpg" alt="">
-                                        <h5>Vegetable’s Package</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        $55.00
-                                    </td>
-                                    <td class="shoping__cart__item__close text-center">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="img/cart/cart-2.jpg" alt="">
-                                        <h5>Fresh Garden Vegetable</h5>
-                                    </td>
-                                    <td class="shoping__cart__total">
-                                        $39.99
-                                    </td>
-                                    <td class="shoping__cart__item__close text-center">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="img/cart/cart-3.jpg" alt="">
-                                        <h5>Organic Bananas</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        $69.00
-                                    </td>
-                                    <td class="shoping__cart__item__close text-center">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
+                                @forelse($favorites as $favorite)
+                                    <tr>
+                                        <td class="shoping__cart__item">
+                                            <img src="{{ asset('storage/' . $favorite->product->image_path) }}" alt="{{ $favorite->product->name }}">
+                                            <h5>{{ $favorite->product->name }}</h5>
+                                        </td>
+                                        <td class="shoping__cart__price">
+                                            ${{ number_format($favorite->product->price, 2) }}
+                                        </td>
+                                        <td class="shoping__cart__item__close text-center">
+                                            <a href="{{ route('remove_fav', ['id' => $favorite->product->id]) }}" class="remove-fav">
+                                                <span class="icon_close"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3">No favorites found.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -108,11 +97,8 @@
         </div>
     </section>
 
-   
     @include('home.footer')
     @include('home.script')
-
-
 
 </body>
 

@@ -65,7 +65,7 @@
                         <li><a href="{{ route('shop') }}">Shop</a></li>
                         <li><a href="#">My Account</a>
                                 <ul class="header__menu__dropdown">
-                                    <li><a href="{{ route('favorites') }}">My Favorites</a></li>
+                                    <li><a href="{{ route('home.favorites') }}">My Favorites</a></li>
                                     <li><a href="{{ route('myorders') }}"">My Orders</a></li>
                                 
                                 </ul>

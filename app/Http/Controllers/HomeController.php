@@ -300,7 +300,6 @@ public function stripePost(Request $request)
 
 
 
-// HomeController.php
 
 public function add_fav(Request $request, $id)
 {
@@ -327,6 +326,24 @@ public function add_fav(Request $request, $id)
     }
 }
 
+public function favorites()
+{
+    $userId = auth()->id();
+    $favorites = Favorite::where('user_id', $userId)
+                         ->with('product') // Assuming you have a product relation in Favorite
+                         ->get();
+
+    return view('home.favorites', ['favorites' => $favorites]);
+}
+
+public function removeFavorite($id)
+{
+    $userId = auth()->id();
+
+    Favorite::where('user_id', $userId)->where('product_id', $id)->delete();
+
+    return redirect()->route('home.favorites')->with('success', 'Product removed from favorites.');
+}
 
 
 
