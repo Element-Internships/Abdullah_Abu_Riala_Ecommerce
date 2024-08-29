@@ -64,6 +64,7 @@ Route::get('/stripe', [HomeController::class, 'stripe'])->name('stripe');
 Route::post('stripe', [HomeController::class, 'stripePost'])->name('stripe.post');
 Route::get('/order', [AdminController::class, 'order'])->name('order');
 Route::get('/delivered/{id}', [AdminController::class, 'delivered'])->name('delivered');
+Route::delete('/delete_order/{id}', [AdminController::class, 'deleteOrder'])->name('delete_order');
 
 
 

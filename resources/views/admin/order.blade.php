@@ -44,12 +44,15 @@
                         <td>{{ $order->payment_status }}</td>
                         <td>{{ $order->delivery_status }}</td>
                         <td>
-                            @if($order->delivery_status=='Processing')
-                          <a href="{{url('delivered',$order->id)}}" onclick="return confirm('Are you sure the Product is Delivered ?!!')" class="btn btn-primary btn-sm">Delivered</a>
-                           @else
-                           <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                          @if($order->delivery_status == 'Processing')
+                            <a href="{{ url('delivered', $order->id) }}" onclick="return confirm('Are you sure the Product is Delivered?')" class="btn btn-primary btn-sm">Delivered</a>
+                          @else
+                            <form action="{{ route('delete_order', $order->id) }}" method="POST" style="display:inline;">
+                              @csrf
+                              @method('DELETE')
+                              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Order?');">Delete</button>
+                            </form>
                           @endif
-
                         </td>
                       </tr>
                     @endforeach

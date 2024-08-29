@@ -65,5 +65,15 @@ class AdminController extends Controller
             return redirect()->back();
         }
 
+        public function deleteOrder($id) {
+            $order = Order::find($id);
+        
+            if ($order) {
+                $order->delete();
+                return redirect()->back()->with('success', 'Order deleted successfully.');
+            } else {
+                return redirect()->back()->with('error', 'Order not found.');
+            }
+        }
         
 }
