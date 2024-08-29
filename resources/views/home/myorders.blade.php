@@ -10,7 +10,6 @@
     <title>Ecommerce BU Internship</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
@@ -19,6 +18,8 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -60,35 +61,53 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($orders as $order)
                         <tr>
-                            <td>#12345</td>
-                            <td>2024-08-25</td>
-                            <td>$150.00</td>
-                            <td><span class="badge badge-info">Processing</span></td>
+                            <td>#{{ $order->id }}</td>
+                            <td>{{ $order->created_at->format('Y-m-d') }}</td>
+                            <td>${{ $order->price }}</td>
                             <td>
-                                <a href="order-details.html" class="btn btn-sm btn-primary">View</a>
+                                <span class="badge badge-{{ $order->delivery_status == 'Shipped' ? 'success' : 'info' }}">
+                                    {{ $order->delivery_status }}
+                                </span>
+                            </td>
+                            <td>
+                                @if ($order->delivery_status == 'Processing')
+                                    <form id="cancel-form-{{ $order->id }}" action="{{ route('order.cancel', $order->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="confirmCancel({{ $order->id }})">Cancel</button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
-                        <tr>
-                            <td>#12346</td>
-                            <td>2024-08-20</td>
-                            <td>$85.00</td>
-                            <td><span class="badge badge-success">Shipped</span></td>
-                            <td>
-                                <a href="order-details.html" class="btn btn-sm btn-primary">View</a>
-                            </td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </section>
 
-   
     @include('home.footer')
     @include('home.script')
 
-
+    <script>
+        function confirmCancel(orderId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, cancel it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('cancel-form-' + orderId).submit();
+                }
+            });
+        }
+    </script>
 
 </body>
 

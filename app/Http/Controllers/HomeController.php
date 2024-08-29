@@ -346,6 +346,31 @@ public function removeFavorite($id)
 }
 
 
+public function myOrders()
+    {
+        // Fetch orders for the currently authenticated user
+        $orders = Order::where('user_id', auth()->id())->get();
 
+        // Return the view with orders data
+        return view('home.myorders', ['orders' => $orders]);
+    }
 
+    public function cancelOrder($id)
+{
+    // Find the order by ID
+    $order = Order::find($id);
+
+    // Check if the order exists and if it is in 'Processing' status
+    if ($order && $order->delivery_status == 'Processing') {
+        // Update the order status to 'CANCELED'
+        $order->delivery_status = 'CANCELED';
+        $order->save();
+        
+        // Optionally, you can return a success message or redirect
+        return redirect()->back()->with('success', 'Order has been canceled.');
+    }
+
+    // Optionally, handle the case where the order doesn't exist or is not in 'Processing' status
+    return redirect()->back()->with('error', 'Unable to cancel order.');
+}
 }

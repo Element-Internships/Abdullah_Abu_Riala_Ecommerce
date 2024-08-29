@@ -39,9 +39,6 @@ Route::get('/contact', function () {
 
 
 
-Route::get('/myorders', function () {
-    return view('home.myorders');
-})->name('myorders');
 
 
 Route::get('redirect', [HomeController::class,'redirect']);
@@ -66,6 +63,10 @@ Route::delete('/delete_order/{id}', [AdminController::class, 'deleteOrder'])->na
 Route::post('add_fav/{id}', [HomeController::class, 'add_fav'])->name('add_fav');
 Route::get('/favorites', [HomeController::class, 'favorites'])->name('home.favorites');
 Route::get('/remove_fav/{id}', [HomeController::class, 'removeFavorite'])->name('remove_fav');
+Route::get('/order', [AdminController::class, 'order'])->name('order');
+Route::get('/my-orders', [HomeController::class, 'myOrders'])->name('home.myorders');
+Route::post('/order/cancel/{id}', [HomeController::class, 'cancelOrder'])->name('order.cancel');
+
 
 
 
