@@ -60,4 +60,10 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function favorites()
+{
+    return $this->belongsToMany(Product::class, 'favorites')->withTimestamps();
+}
+
 }

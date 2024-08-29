@@ -37,7 +37,7 @@
                     <div class="breadcrumb__text">
                         <h2>My Orders</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Home</a>
+                            <a href="{{ url('/') }}">Home</a>
                             <span>My Orders</span>
                         </div>
                     </div>

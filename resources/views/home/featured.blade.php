@@ -28,7 +28,18 @@
                     <div class="featured__item">
                         <div class="featured__item__pic set-bg" data-setbg="{{ asset('storage/' . $product->image_path) }}">
                             <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+
+                                <!-- Favorite Button -->
+                                <li>
+                                    <a href="#" class="add-to-fav" data-id="{{ $product->id }}">
+                                        <i class="fa fa-heart"></i>
+                                    </a>
+                                    <form id="fav-form-{{ $product->id }}" action="{{ url('add_fav', $product->id) }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </li>
+
+
                                 <li>
                                     <a href="#" class="add-to-cart" data-id="{{ $product->id }}">
                                         <i class="fa fa-shopping-cart"></i>
@@ -51,6 +62,7 @@
     </div>
 </section>
 
+<!-- SweetAlert2 and JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -71,11 +83,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Update cart UI dynamically
                         document.getElementById('cart-item-count').textContent = data.totalItems;
                         document.getElementById('cart-total-price').textContent = `$${data.totalPrice.toFixed(2)}`;
                         
-                        // Show success message
                         Swal.fire({
                             icon: 'success',
                             title: 'Added to Cart',
@@ -84,7 +94,6 @@
                             showConfirmButton: false
                         });
                     } else {
-                        // Show error message
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -99,5 +108,34 @@
                 });
             });
         });
+
+        document.querySelectorAll('.add-to-fav').forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                var productId = this.getAttribute('data-id');
+
+                fetch(`{{ url('add_fav') }}/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        icon: data.success ? (data.message === 'Product is already in your favorites.' ? 'info' : 'success') : 'warning',
+                        title: data.success ? (data.message === 'Product is already in your favorites.' ? 'Already in Favorites' : 'Added to Favorites') : '',
+                        text: data.message,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
     });
 </script>
+

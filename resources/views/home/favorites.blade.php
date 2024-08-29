@@ -40,7 +40,7 @@
                     <div class="breadcrumb__text">
                         <h2>My Favorites</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Home</a>
+                            <a href="{{ url('/') }}">Home</a>
                             <span>My Favorites</span>
                         </div>
                     </div>

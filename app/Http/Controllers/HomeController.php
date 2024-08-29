@@ -10,6 +10,8 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Favorite;
+
 use Stripe\Stripe;
 use Stripe\Charge;
 class HomeController extends Controller
@@ -117,7 +119,6 @@ class HomeController extends Controller
     }
 }
 
-    
 
 
     public function show_cart()
@@ -296,6 +297,37 @@ public function stripePost(Request $request)
 
     return back();
 }
+
+
+
+// HomeController.php
+
+public function add_fav(Request $request, $id)
+{
+    if (Auth::check()) {
+        $userId = auth()->id(); // Get the currently logged-in user's ID
+        $productId = $id;
+
+        // Check if the product is already in the favorites
+        $existingFav = Favorite::where('user_id', $userId)->where('product_id', $productId)->first();
+
+        if ($existingFav) {
+            return response()->json(['success' => false, 'message' => 'Product is already in your favorites.']);
+        }
+
+        // Add to favorites
+        Favorite::create([
+            'user_id' => $userId,
+            'product_id' => $productId,
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Product added to your favorites.']);
+    } else {
+        return response()->json(['success' => false, 'message' => 'Please log in to add items to the favorites.']);
+    }
+}
+
+
 
 
 

@@ -99,7 +99,17 @@
                                 <div class="featured__item">
                                     <div class="featured__item__pic set-bg" data-setbg="{{ asset('storage/' . $product->image_path) }}">
                                         <ul class="featured__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            
+                                        <!-- Favorite Button -->
+                                <li>
+                                    <a href="#" class="add-to-fav" data-id="{{ $product->id }}">
+                                        <i class="fa fa-heart"></i>
+                                    </a>
+                                    <form id="fav-form-{{ $product->id }}" action="{{ url('add_fav', $product->id) }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </li>
+                                
                                             <li>
                                                 <a href="#" class="add-to-cart" data-id="{{ $product->id }}">
                                                     <i class="fa fa-shopping-cart"></i>
@@ -135,112 +145,141 @@
     @include('home.script')
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const categoryLinks = document.querySelectorAll('.filter-category');
-            const productItems = document.querySelectorAll('.product-item');
-            
-            // Initialize the price range slider
-            const priceRange = document.getElementById('price-range');
-            const minAmount = document.getElementById('minamount');
-            const maxAmount = document.getElementById('maxamount');
-            
-            $(priceRange).slider({
-                range: true,
-                min: $(priceRange).data('min'),
-                max: $(priceRange).data('max'),
-                values: [$(priceRange).data('min'), $(priceRange).data('max')],
-                slide: function (event, ui) {
-                    minAmount.value = `$${ui.values[0]}`;
-                    maxAmount.value = `$${ui.values[1]}`;
-                    filterProducts();
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const categoryLinks = document.querySelectorAll('.filter-category');
+        const productItems = document.querySelectorAll('.product-item');
+
+        // Initialize the price range slider
+        const priceRange = document.getElementById('price-range');
+        const minAmount = document.getElementById('minamount');
+        const maxAmount = document.getElementById('maxamount');
+
+        $(priceRange).slider({
+            range: true,
+            min: $(priceRange).data('min'),
+            max: $(priceRange).data('max'),
+            values: [$(priceRange).data('min'), $(priceRange).data('max')],
+            slide: function (event, ui) {
+                minAmount.value = `$${ui.values[0]}`;
+                maxAmount.value = `$${ui.values[1]}`;
+                filterProducts();
+            }
+        });
+
+        // Initial display
+        minAmount.value = `$${$(priceRange).slider('values', 0)}`;
+        maxAmount.value = `$${$(priceRange).slider('values', 1)}`;
+
+        function filterProducts() {
+            const minPrice = $(priceRange).slider('values', 0);
+            const maxPrice = $(priceRange).slider('values', 1);
+            const categoryId = document.querySelector('.filter-category.active')?.getAttribute('data-category-id') || 'all';
+
+            productItems.forEach(item => {
+                const itemCategoryId = item.getAttribute('data-category-id');
+                const itemPrice = parseFloat(item.getAttribute('data-price'));
+
+                if (
+                    (categoryId === 'all' || itemCategoryId === categoryId) &&
+                    itemPrice >= minPrice &&
+                    itemPrice <= maxPrice
+                ) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
                 }
             });
+        }
 
-            // Initial display
-            minAmount.value = `$${$(priceRange).slider('values', 0)}`;
-            maxAmount.value = `$${$(priceRange).slider('values', 1)}`;
-            
-            function filterProducts() {
-                const minPrice = $(priceRange).slider('values', 0);
-                const maxPrice = $(priceRange).slider('values', 1);
-                const categoryId = document.querySelector('.filter-category.active')?.getAttribute('data-category-id') || 'all';
-                
-                productItems.forEach(item => {
-                    const itemCategoryId = item.getAttribute('data-category-id');
-                    const itemPrice = parseFloat(item.getAttribute('data-price'));
-                    
-                    if (
-                        (categoryId === 'all' || itemCategoryId === categoryId) &&
-                        itemPrice >= minPrice &&
-                        itemPrice <= maxPrice
-                    ) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            }
-
-            // Handle category filter
-            categoryLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    categoryLinks.forEach(link => link.classList.remove('active'));
-                    this.classList.add('active');
-                    filterProducts();
-                });
+        // Handle category filter
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                categoryLinks.forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
+                filterProducts();
             });
+        });
 
-            // Handle add to cart
-            document.querySelectorAll('.add-to-cart').forEach(function (link) {
-                link.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    var productId = this.getAttribute('data-id');
-                    var quantity = 1; // Default quantity
+        // Handle add to cart
+        document.querySelectorAll('.add-to-cart').forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                var productId = this.getAttribute('data-id');
+                var quantity = 1; // Default quantity
 
-                    fetch(`{{ url('add_cart') }}/${productId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({ quantity: quantity })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Update cart UI dynamically
-                            document.getElementById('cart-item-count').textContent = data.totalItems;
-                            document.getElementById('cart-total-price').textContent = `$${data.totalPrice.toFixed(2)}`;
-                            
-                            // Show success message
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Added to Cart',
-                                text: data.message,
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                        } else {
-                            // Show error message
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: data.message,
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
+                fetch(`{{ url('add_cart') }}/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ quantity: quantity })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update cart UI dynamically
+                        document.getElementById('cart-item-count').textContent = data.totalItems;
+                        document.getElementById('cart-total-price').textContent = `$${data.totalPrice.toFixed(2)}`;
+                        
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Added to Cart',
+                            text: data.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        // Show error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                 });
             });
         });
-    </script>
+
+        // Handle add to favorites
+        document.querySelectorAll('.add-to-fav').forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                var productId = this.getAttribute('data-id');
+
+                fetch(`{{ url('add_fav') }}/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        icon: data.success ? (data.message === 'Product is already in your favorites.' ? 'info' : 'success') : 'warning',
+                        title: data.success ? (data.message === 'Product is already in your favorites.' ? 'Already in Favorites' : 'Added to Favorites') : '',
+                        text: data.message,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    });
+</script>
 
 </body>
 
