@@ -12,8 +12,17 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
-    <!-- Css Styles -->
-    @include('home.css')
+  
+     <!-- Css Styles -->
+     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+     <link rel="stylesheet" href="{{ asset('home/css/font-awesome.min.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('home/css/elegant-icons.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('home/css/nice-select.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('home/css/jquery-ui.min.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('home/css/owl.carousel.min.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('home/css/slicknav.min.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ asset('home/css/style.css') }}" type="text/css">
+
 
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
