@@ -69,6 +69,7 @@ Route::post('/order/cancel/{id}', [HomeController::class, 'cancelOrder'])->name(
 Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
 Route::get('/service', [AdminController::class, 'service'])->name('admin.contact');
 Route::post('/contact/submit', [HomeController::class, 'submitContact'])->name('contact.submit');
+Route::get('/search_products', [HomeController::class, 'searchProducts']);
 
 
 

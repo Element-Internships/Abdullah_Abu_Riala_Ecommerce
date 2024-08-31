@@ -398,4 +398,20 @@ public function contact()
         return redirect()->back()->with('success', 'Your message has been sent!');
     }
 
+
+    public function searchProducts(Request $request)
+    {
+        $query = $request->input('q');
+        
+        // Validate input
+        if (empty($query)) {
+            return response()->json([]);
+        }
+
+        // Perform a case-insensitive search
+        $products = Product::where('name', 'like', '%' . $query . '%')->get();
+
+        return response()->json($products);
+    }
+
 }
