@@ -54,7 +54,11 @@
         <div class="card mb-4">
             <div class="card-body">
                 <p><strong>Order Date:</strong> {{ $order->created_at->format('Y-m-d') }}</p>
-                <p><strong>Status:</strong> <span class="badge badge-info">{{ $order->delivery_status }}</span></p>
+                <p><strong>Status:</strong> <span class="badge" style="
+                                background-color: {{ $order->delivery_status == 'CANCELED' ? 'red' : ($order->delivery_status == 'Delivered' ? 'green' : ($order->delivery_status == 'Processing' ? 'blue' : 'info')) }};
+                                color: white;">
+                                {{ $order->delivery_status }}
+                            </span></p>
                 <p><strong>Total Price:</strong> ${{ $order->price }}</p>
             </div>
         </div>
