@@ -1,4 +1,8 @@
 <!-- Hero Section Begin -->
+@include('home.css')
+@include('home.script')
+
+
 <section class="hero">
     <div class="container">
         <div class="row">
