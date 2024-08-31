@@ -26,9 +26,8 @@
 
                 <div class="col-lg-3 col-md-4 col-sm-6 mix {{ $categoryClass }}">
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="{{ asset('storage/' . $product->image_path) }}">
+                        <div class="featured__item__pic set-bg" data-setbg="{{ asset('storage/' . $product->image_path) }}" style="background-size: cover; background-position: center; height: 200px;">
                             <ul class="featured__item__pic__hover">
-
                                 <!-- Favorite Button -->
                                 <li>
                                     <a href="#" class="add-to-fav" data-id="{{ $product->id }}">
@@ -38,7 +37,6 @@
                                         @csrf
                                     </form>
                                 </li>
-
 
                                 <li>
                                     <a href="#" class="add-to-cart" data-id="{{ $product->id }}">
@@ -138,4 +136,3 @@
         });
     });
 </script>
-

@@ -69,7 +69,7 @@
                             <h4>Price Range</h4>
                             <div class="price-range-wrap">
                                 <div id="price-range" class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                    data-min="1" data-max="5000">
+                                    data-min="1" data-max="2000">
                                     <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                     <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                                     <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>

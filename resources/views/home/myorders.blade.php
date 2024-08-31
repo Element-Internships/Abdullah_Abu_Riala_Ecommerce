@@ -67,11 +67,17 @@
                             <td>{{ $order->created_at->format('Y-m-d') }}</td>
                             <td>${{ $order->price }}</td>
                             <td>
-                                <span class="badge badge-{{ $order->delivery_status == 'Shipped' ? 'success' : 'info' }}">
-                                    {{ $order->delivery_status }}
-                                </span>
-                            </td>
+                            <span class="badge" style="
+                                background-color: {{ $order->delivery_status == 'CANCELED' ? 'red' : ($order->delivery_status == 'Delivered' ? 'green' : ($order->delivery_status == 'Processing' ? 'blue' : 'info')) }};
+                                color: white;">
+                                {{ $order->delivery_status }}
+                            </span>
+                        </td>
+
+                            
                             <td>
+                            <a href="{{ route('home.order-details', $order->id) }}" class="btn btn-sm btn-primary">View</a>
+
                                 @if ($order->delivery_status == 'Processing')
                                     <form id="cancel-form-{{ $order->id }}" action="{{ route('order.cancel', $order->id) }}" method="POST" style="display:inline;">
                                         @csrf

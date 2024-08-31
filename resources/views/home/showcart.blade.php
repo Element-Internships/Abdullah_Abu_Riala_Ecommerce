@@ -75,19 +75,34 @@
             cursor: pointer;
         }
 
-     
-
         .quantity {
-            display: inline-block;
-            width: 80px;
+            display: flex;
+            align-items: center;
+            gap: 5px; /* Add space between buttons and input */
         }
 
-        .pro-qty input {
-            width: 100%;
-            padding: 5px;
+        .quantity button {
+            background-color: #5bc0de;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .quantity button:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+
+        .quantity-value {
+            width: 40px;
+            text-align: center;
+            font-size: 16px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            text-align: center;
+            padding: 5px;
         }
     </style>
 </head>
@@ -128,9 +143,10 @@
       <!-- Cart Section -->
 <section class="cart-section content spad">
     <div class="container">
-        <h2>YOUR CART IS EMPTY</h2>
+        <h2>YOUR CART</h2>
 
         @if ($cartItems->isEmpty())
+        <h2>   IS EMPTY</h2>
         <br>
             <div class="row">
             <div class="col-lg-6">
@@ -142,8 +158,7 @@
             <table class="cart-table">
                 <thead>
                     <tr>
-                        <th>Product Image</th>
-                        <th>Product Title</th>
+                        <th>Product</th>
                         <th>Quantity</th>
                         <th>Price</th>
                         <th>Total</th>
@@ -153,12 +168,12 @@
                 <tbody>
                     @foreach ($cartItems as $item)
                         <tr>
-                            <td><img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_tittle }}"></td>
-                            <td>{{ $item->product_tittle }}</td>
+                            <td><img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_tittle }}">
+                            {{ $item->product_tittle }}</td>
                             <td>
                                 <div class="quantity">
                                     <button class="btn-decrement" data-id="{{ $item->id }}">-</button>
-                                    <span class="quantity-value">{{ $item->quantity }}</span>
+                                    <input type="text" class="quantity-value" value="{{ $item->quantity }}" readonly>
                                     <button class="btn-increment" data-id="{{ $item->id }}">+</button>
                                 </div>
                             </td>
@@ -226,6 +241,7 @@
     .quantity {
         display: flex;
         align-items: center;
+        gap: 5px; /* Add space between buttons and input */
     }
 
     .quantity button {
@@ -235,6 +251,7 @@
         padding: 5px 10px;
         font-size: 16px;
         cursor: pointer;
+        border-radius: 4px;
     }
 
     .quantity button:disabled {
@@ -243,10 +260,13 @@
     }
 
     .quantity-value {
-        margin: 0 10px;
+        width: 40px;
+        text-align: center;
         font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
     }
-
 
         </style>
 
@@ -254,107 +274,55 @@
     </div>
 
     @include('home.script')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
     // Handle cart item quantity update with + and - buttons
     $('.cart-table').on('click', '.btn-increment, .btn-decrement', function(event) {
         event.preventDefault();
         var button = $(this);
         var cartItemId = button.data('id');
         var quantityElement = button.siblings('.quantity-value');
-        var currentQuantity = parseInt(quantityElement.text());
+        var currentQuantity = parseInt(quantityElement.val());
         var newQuantity = button.hasClass('btn-increment') ? currentQuantity + 1 : currentQuantity - 1;
 
         if (newQuantity < 1) return; // Prevent quantity from being less than 1
 
         $.ajax({
             url: '{{ route('cart.update', '') }}/' + cartItemId,
-            method: 'POST',
+            type: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',
                 quantity: newQuantity
             },
             success: function(response) {
-                if (response.success) {
-                    // Update quantity and total price in the UI
-                    quantityElement.text(newQuantity);
-                    button.closest('tr').find('td').eq(4).text('$' + (response.totalPrice / response.totalItems).toFixed(2));
-                    $('.cart-total h3').text('Total: $' + response.totalPrice.toFixed(2));
+                quantityElement.val(newQuantity);
+                // Update the total price in the cart
+                $('.cart-total h3').text('Total: $' + response.totalPrice.toFixed(2));
 
-                    // Update cart UI dynamically
-                    if (document.getElementById('cart-item-count')) {
-                        document.getElementById('cart-item-count').textContent = response.totalItems;
-                    }
-                    if (document.getElementById('cart-total-price')) {
-                        document.getElementById('cart-total-price').textContent = `$${response.totalPrice.toFixed(2)}`;
-                    }
+                // Update cart icon count and price
+                $('#cart-item-count').text(response.totalItems);
+                $('#cart-total-price').text('$' + response.totalPrice.toFixed(2));
 
-                    // Show success message
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Updated',
-                        text: response.message,
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-                }
-            }
-        });
-    });
-
-    // Handle cart item removal with SweetAlert confirmation
-    $('.cart-table').on('click', '.btn-remove', function(event) {
-        event.preventDefault();
-        var link = $(this);
-        var actionUrl = link.attr('href');
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d9534f',
-            cancelButtonColor: '#5bc0de',
-            confirmButtonText: 'Yes, remove it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: actionUrl,
-                    method: 'GET',
-                    success: function(response) {
-                        if (response.success) {
-                            // Remove the row from the table
-                            link.closest('tr').remove();
-                            $('.cart-total h3').text('Total: $' + response.totalPrice.toFixed(2));
-
-                            // Update cart UI dynamically
-                            if (document.getElementById('cart-item-count')) {
-                                document.getElementById('cart-item-count').textContent = response.totalItems;
-                            }
-                            if (document.getElementById('cart-total-price')) {
-                                document.getElementById('cart-total-price').textContent = `$${response.totalPrice.toFixed(2)}`;
-                            }
-
-                            // Show success message
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Removed',
-                                text: response.message,
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                        }
-                    }
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Quantity updated',
+                    text: 'The quantity has been updated successfully.'
+                });
+            },
+            error: function(xhr) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while updating the quantity.'
                 });
             }
         });
     });
 });
-
 </script>
 
-</body>
 
+</body>
 </html>

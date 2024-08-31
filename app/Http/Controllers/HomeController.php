@@ -154,17 +154,22 @@ class HomeController extends Controller
     $cart->price = $originalPrice * $newQuantity;
     $cart->save();
 
+    // Calculate the new total price and item count
+    $totalItems = Cart::where('user_id', Auth::id())->sum('quantity');
+    $totalPrice = Cart::where('user_id', Auth::id())->sum('price');
+
     if ($request->ajax()) {
         return response()->json([
             'success' => true,
             'message' => 'Cart updated successfully',
-            'totalItems' => Cart::where('user_id', Auth::id())->sum('quantity'),
-            'totalPrice' => Cart::where('user_id', Auth::id())->sum('price')
+            'totalItems' => $totalItems,
+            'totalPrice' => $totalPrice
         ]);
     }
 
     return redirect()->route('show_cart')->with('message', 'Cart updated successfully');
 }
+
 
 
 public function delete_cart($id)
@@ -206,7 +211,7 @@ public function delete_cart($id)
             $order->price = $item->price;
             $order->quantity = $item->quantity;
             $order->image = $item->image;
-            $order->product_id = $item->product_id;
+            $order->product_id = $item->Product_id;
             $order->payment_status = 'cash on delivery';
             $order->delivery_status = 'Processing';
     
@@ -413,5 +418,20 @@ public function contact()
 
         return response()->json($products);
     }
+
+
+    public function orderdetails($id)
+{
+    // Fetch the order by ID
+    $order = Order::find($id);
+
+    // Check if the order exists
+    if (!$order) {
+        return redirect()->back()->with('error', 'Order not found.');
+    }
+
+    // Return the view with order data
+    return view('home.order-details', compact('order'));
+}
 
 }
