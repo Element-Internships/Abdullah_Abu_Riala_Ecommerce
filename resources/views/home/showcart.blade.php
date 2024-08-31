@@ -75,9 +75,7 @@
             cursor: pointer;
         }
 
-        .btn-remove:hover {
-            text-decoration: underline;
-        }
+     
 
         .quantity {
             display: inline-block;
@@ -127,8 +125,8 @@
             </div>
         </div>
     </section>
-        <!-- Cart Section -->
-        <section class="cart-section content spad">
+      <!-- Cart Section -->
+<section class="cart-section content spad">
     <div class="container">
         <h2>YOUR CART IS EMPTY</h2>
 
@@ -158,24 +156,21 @@
                             <td><img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_tittle }}"></td>
                             <td>{{ $item->product_tittle }}</td>
                             <td>
-                            <form action="{{ route('cart.update', $item->id) }}" method="POST">
-                                            @csrf
-                                            <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" required>
-                                            <button type="submit" class="btn-update">Update</button>
-                                        </form>
-                                    </td>
-                                    <td>${{ number_format($item->price / $item->quantity, 2) }}</td>
-                                    <td>${{ number_format($item->price, 2) }}</td>
-                            <td>
-                                <a href="{{ route('cart.delete', $item->id) }}" class="btn-remove">Remove</a>
-                                </form> <!-- Move the form closing tag here -->
+                                <div class="quantity">
+                                    <button class="btn-decrement" data-id="{{ $item->id }}">-</button>
+                                    <span class="quantity-value">{{ $item->quantity }}</span>
+                                    <button class="btn-increment" data-id="{{ $item->id }}">+</button>
+                                </div>
+                            </td>
+                            <td>${{ number_format($item->price / $item->quantity, 2) }}</td>
+                            <td>${{ number_format($item->price, 2) }}</td>
+                            <td class="shoping__cart__item__close">
+                                <a href="{{ route('cart.delete', $item->id) }}" class="btn-remove"><span class="icon_close"></span></a>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-
-            
 
             <div class="row">
             <div class="col-lg-6">
@@ -184,17 +179,15 @@
                 </div>
             </div>
             <div class="col-lg-6">
-            <div class="shoping__checkout" style="margin-top:0px;">
-                <h5>Cart Total</h5>
-                <div class="cart-total">
-                <h3>Total: ${{ number_format($cartItems->sum('price'), 2) }}</h3>
-            </div>
-                <a href="{{ route('cash_order') }}" class="primary-btn">Proceed with Cash on Delivery</a>
-                <br>
-                <a href="{{ url('stripe') }}" class="primary-btn">Proceed with Card Payment</a>
-            </div>
-
-
+                <div class="shoping__checkout" style="margin-top:0px;">
+                    <h5>Cart Total</h5>
+                    <div class="cart-total">
+                        <h3>Total: ${{ number_format($cartItems->sum('price'), 2) }}</h3>
+                    </div>
+                    <a href="{{ route('cash_order') }}" class="primary-btn">Proceed with Cash on Delivery</a>
+                    <br>
+                    <a href="{{ url('stripe') }}" class="primary-btn">Proceed with Card Payment</a>
+                </div>
             </div>
         </div>
         @endif
@@ -229,6 +222,32 @@
             .btn-checkout:hover {
                 opacity: 0.8;
             }
+            
+    .quantity {
+        display: flex;
+        align-items: center;
+    }
+
+    .quantity button {
+        background-color: #5bc0de;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .quantity button:disabled {
+        background-color: #ddd;
+        cursor: not-allowed;
+    }
+
+    .quantity-value {
+        margin: 0 10px;
+        font-size: 16px;
+    }
+
+
         </style>
 
         @include('home.footer')
@@ -238,21 +257,29 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle cart item quantity update
-    $('.cart-table').on('submit', 'form', function(event) {
+    // Handle cart item quantity update with + and - buttons
+    $('.cart-table').on('click', '.btn-increment, .btn-decrement', function(event) {
         event.preventDefault();
-        var form = $(this);
-        var actionUrl = form.attr('action');
-        var formData = form.serialize();
+        var button = $(this);
+        var cartItemId = button.data('id');
+        var quantityElement = button.siblings('.quantity-value');
+        var currentQuantity = parseInt(quantityElement.text());
+        var newQuantity = button.hasClass('btn-increment') ? currentQuantity + 1 : currentQuantity - 1;
+
+        if (newQuantity < 1) return; // Prevent quantity from being less than 1
 
         $.ajax({
-            url: actionUrl,
+            url: '{{ route('cart.update', '') }}/' + cartItemId,
             method: 'POST',
-            data: formData,
+            data: {
+                _token: '{{ csrf_token() }}',
+                quantity: newQuantity
+            },
             success: function(response) {
                 if (response.success) {
-                    // Update cart items and total price
-                    form.closest('tr').find('td').eq(4).text('$' + (response.totalPrice / response.totalItems).toFixed(2));
+                    // Update quantity and total price in the UI
+                    quantityElement.text(newQuantity);
+                    button.closest('tr').find('td').eq(4).text('$' + (response.totalPrice / response.totalItems).toFixed(2));
                     $('.cart-total h3').text('Total: $' + response.totalPrice.toFixed(2));
 
                     // Update cart UI dynamically
@@ -325,6 +352,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
 </script>
 
 </body>
