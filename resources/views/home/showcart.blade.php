@@ -130,10 +130,16 @@
         <!-- Cart Section -->
         <section class="cart-section content spad">
     <div class="container">
-        <h2>Your Cart</h2>
+        <h2>YOUR CART IS EMPTY</h2>
 
         @if ($cartItems->isEmpty())
-            <p>Your cart is empty :(</p>
+        <br>
+            <div class="row">
+            <div class="col-lg-6">
+                <div class="shoping__cart__btns">
+                    <a href="{{ url('shop') }}" class="primary-btn cart-btn">GO SHOPPING</a>
+                </div>
+            </div>
         @else
             <table class="cart-table">
                 <thead>
@@ -169,15 +175,28 @@
                 </tbody>
             </table>
 
-            <div class="cart-total">
+            
+
+            <div class="row">
+            <div class="col-lg-6">
+                <div class="shoping__cart__btns">
+                    <a href="{{ url('shop') }}" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+            <div class="shoping__checkout" style="margin-top:0px;">
+                <h5>Cart Total</h5>
+                <div class="cart-total">
                 <h3>Total: ${{ number_format($cartItems->sum('price'), 2) }}</h3>
             </div>
-
-            <!-- Checkout Options -->
-            <div class="checkout-options">
-                <a href="{{ route('cash_order') }}" class="btn-checkout btn-cash">Proceed with Cash on Delivery</a>
-                <a href="{{ url('stripe') }}" class="btn-checkout btn-card">Proceed with Card Payment</a>
+                <a href="{{ route('cash_order') }}" class="primary-btn">Proceed with Cash on Delivery</a>
+                <br>
+                <a href="{{ url('stripe') }}" class="primary-btn">Proceed with Card Payment</a>
             </div>
+
+
+            </div>
+        </div>
         @endif
     </div>
 </section>
