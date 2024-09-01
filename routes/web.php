@@ -31,6 +31,8 @@ Route::middleware([
     })->name('dashboard');
 });
 
+
+
 Route::get('/contact', function () {
     return view('home.contact');
 })->name('contact');
