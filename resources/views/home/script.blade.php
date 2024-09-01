@@ -19,3 +19,45 @@
     <script src="js/main.js"></script>
 
    
+    <script>
+    var availableTags = [];
+
+$.ajax({
+    method: "GET",
+    url: "/product-list",
+    success: function (response) {
+        availableTags = response.map(function(product) {
+            return product.name;
+        });
+        
+        startAutoComplete(response); // Pass the full response to get product IDs
+    },
+    error: function(xhr, status, error) {
+        console.error("Error:", error);
+    }
+});
+
+function startAutoComplete(products) {
+    $("#search_product").autocomplete({
+        source: availableTags,
+        select: function (event, ui) {
+            // Find the product ID from the selected product name
+            var product = products.find(p => p.name === ui.item.value);
+            if (product) {
+                window.location.href = "{{ url('product_details') }}/" + product.id;
+            }
+        }
+    });
+}
+
+$("#search-form").submit(function(event) {
+    event.preventDefault(); // Prevent the default form submission
+    var query = $("#search_product").val();
+    var product = availableTags.find(p => p.name === query);
+    if (product) {
+        window.location.href = "{{ url('product_details') }}/" + product.id;
+    }
+});
+
+</script>
+

@@ -404,20 +404,6 @@ public function contact()
     }
 
 
-    public function searchProducts(Request $request)
-    {
-        $query = $request->input('q');
-        
-        // Validate input
-        if (empty($query)) {
-            return response()->json([]);
-        }
-
-        // Perform a case-insensitive search
-        $products = Product::where('name', 'like', '%' . $query . '%')->get();
-
-        return response()->json($products);
-    }
 
 
     public function orderdetails($id)
@@ -433,5 +419,15 @@ public function contact()
     // Return the view with order data
     return view('home.order-details', compact('order'));
 }
+
+public function productlistAjax(Request $request)
+{
+    // Fetch all product names and IDs from the database
+    $products = Product::select('id', 'name')->get();
+
+    // Return the list of products as JSON
+    return response()->json($products);
+}
+
 
 }
